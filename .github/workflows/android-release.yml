@@ -97,3 +97,38 @@ jobs:
             app/build/outputs/bundle/release/*.aab
             app/build/reports/lint-results-release.html
             SHA256SUMS.txt
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download signed market artifacts (if any)
+        uses: actions/download-artifact@v4
+        id: market
+        with:
+          pattern: terminal-0.1.0-market-*
+          path: assets
+          merge-multiple: true
+        continue-on-error: true
+      - name: Download verification artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: terminal-0.1.0-verify-${{ github.sha }}
+          path: verify
+      - name: Assemble release assets
+        run: |
+          mkdir -p assets
+          find verify assets -type f \( -name '*.apk' -o -name '*.aab' \) \
+            -exec sh -c 'f="$1"; n="$(basename "$f")"; [ -f "assets/$n" ] || cp -n "$f" "assets/$n"' _ {} \;
+          cp -n assets/app-debug.apk assets/TerminalSSH-0.1.0-debug.apk 2>/dev/null || true
+          find assets -maxdepth 1 -type f -print | sort
+          find assets -maxdepth 1 -type f -exec sha256sum {} \;
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: assets/**
