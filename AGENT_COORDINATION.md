@@ -72,8 +72,7 @@ emulator, and visually inspect the launcher result before committing.
   This verification-only iteration changed no product/test/launcher resources and therefore
   did not run the full release gates or publish a release. Evidence is in the connected market
   Android-test report under `app/build/reports/androidTests/connected/debug/flavors/market/`.
-  Audit commit `b316aa0` is preserved locally; its scoped push was blocked because GitHub HTTPS
-  credentials are unavailable in this worker.
+  Audit commit `b316aa0` and its handoff are pushed through `efcd1d9` on `origin/main`.
   Next: after the launcher claim completes, repair these semantics or adjust the instrumentation
   to query the merged selectable parent only if a UIAutomator tree proves the parent already
   exposes the correct state; rerun both focused tests before claiming either fix verified.
@@ -235,6 +234,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: reconciled the concurrent accessibility audit, confirmed the shared
+  emulator had disappeared during a duplicate focused run, and pushed the verified audit and
+  handoff commits through `efcd1d9` without staging Claude's launcher resources.
 
 - 2026-08-24 Codex: started the existing API 36 AVD and executed the pending font-size and
   session-selection accessibility tests; both failed (0/2) at their semantic-state assertions.
