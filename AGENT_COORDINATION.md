@@ -86,8 +86,10 @@ emulator, and visually inspect the launcher result before committing.
   gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed. No emulator
   check applies to this pure deterministic storage-key helper. Claude's launcher files and the
   unrelated host-editor, navigation, and terminal drafts were not staged or edited. No release is
-  warranted for this bounded fix. Next: complete and visually verify the actively claimed launcher
-  rebuild, then rerun the pending navigation and host-editor instrumentation with an exclusive
+  warranted for this bounded fix. Verified commit `5017149` is local; its scoped push failed before
+  transfer because GitHub HTTPS credentials are unavailable to this worker. Next: a credentialed
+  worker should push `main`, complete and visually verify the actively claimed launcher rebuild,
+  then rerun the pending navigation and host-editor instrumentation with an exclusive
   emulator/package-install window.
 
 - Secret-file zero-read progress repair (2026-08-24): bounded private-key reads now fall back to
