@@ -72,8 +72,8 @@ emulator, and visually inspect the launcher result before committing.
   pending. Source/market/loop gates, whitespace, both-flavor unit tests and lint, and both debug
   APK builds passed. The shared Kotlin daemon was canceled during compilation; Gradle's clean
   in-process fallback completed successfully. Claude's launcher resources and loop prompt were
-  not staged or modified. Commits `228e12d` and `01282cd` are preserved locally; push is blocked
-  because GitHub HTTPS credentials are unavailable to this worker. No release is warranted for this accessibility-only increment.
+  not staged or modified. Commits through `587c978` are pushed to `origin/main`. No release is
+  warranted for this accessibility-only increment.
   Next safe task: complete and visually verify the claimed launcher rebuild, then execute this
   focused session-tab test with the launcher/terminal emulator smoke.
 
@@ -213,8 +213,8 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: added selected-state/tab semantics for live terminal sessions and focused
   instrumentation; Android-test compilation and every static/unit/lint/APK gate passed, with
   emulator execution pending because no device is attached. Claude's launcher work was untouched.
-- 2026-08-24 Codex: committed session-tab accessibility as `228e12d` with handoff `01282cd`;
-  the scoped push reached GitHub but could not authenticate, so both commits remain local.
+- 2026-08-24 Codex: pushed the session-tab accessibility increment and handoff through
+  `587c978`; Claude's launcher resources remain unstaged and untouched.
 
 - 2026-08-24 Codex: fixed CR-only multiline paste detection, passed focused API 36
   instrumentation (1/1) and every required static/build gate, and committed `bd47c23` without
