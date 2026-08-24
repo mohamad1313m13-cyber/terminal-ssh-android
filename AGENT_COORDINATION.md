@@ -75,6 +75,16 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Unsupported deep-link surface removed (2026-08-24): the exported launcher activity no longer
+  advertises `ssh://` VIEW/BROWSABLE handling that the app never implemented, avoiding silent link
+  drops and an unnecessary external intent surface. Direct `apkanalyzer` inspection of the rebuilt
+  market and gplay universal APKs confirmed both retain MAIN/LAUNCHER and neither contains VIEW,
+  BROWSABLE, or an `ssh` scheme. Source, market, and loop security gates, whitespace, both-flavor
+  unit tests and lint, and both debug APK builds passed. Claude's launcher files and the unrelated
+  host-editor and terminal drafts were not staged or modified. No release is warranted for this
+  bounded manifest correction. Next: complete and visually verify the claimed launcher rebuild,
+  then rerun the host-editor draft twice with an exclusive emulator window.
+
 - Host-editor verification was externally invalidated again (2026-08-24). After a successful
   origin fetch, Codex booted the existing API 36 `term36` AVD and ran only
   `HostEditValidationTest`. The first execution reached its entry assertion while an Android
