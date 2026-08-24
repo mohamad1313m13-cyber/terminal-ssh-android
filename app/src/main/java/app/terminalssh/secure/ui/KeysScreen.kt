@@ -4,7 +4,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -72,6 +74,7 @@ fun KeysScreen(viewModel: AppViewModel) {
         }
 
         items(keys, key = { it.id }) { entry ->
+            val deleteDescription = stringResource(R.string.key_delete, entry.name)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -101,12 +104,16 @@ fun KeysScreen(viewModel: AppViewModel) {
                         fontFamily = FontFamily.Monospace,
                     )
                 }
-                Icon(
-                    Icons.Outlined.Delete,
-                    contentDescription = stringResource(R.string.delete),
-                    tint = Danger,
-                    modifier = Modifier.clickable { viewModel.deleteKey(entry) }.padding(8.dp),
-                )
+                IconButton(
+                    onClick = { viewModel.deleteKey(entry) },
+                    modifier = Modifier.semantics { contentDescription = deleteDescription },
+                ) {
+                    Icon(
+                        Icons.Outlined.Delete,
+                        contentDescription = null,
+                        tint = Danger,
+                    )
+                }
             }
         }
     }

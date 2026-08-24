@@ -65,6 +65,14 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Private-key delete accessibility: pending commit (`fix: expose accessible key deletion`).
+  Each delete action now announces the intended key name from a full 48 dp Material button.
+  API 36 instrumentation verified the localized action, minimum 48 dp bounds, disappearance
+  after activation, and deletion of the intended metadata record (1/1). Source, market, and
+  loop gates; whitespace; Android-test compilation; both-flavor unit tests, lint, and debug
+  APK builds passed. Claude's active launcher resources were not staged or modified by Codex.
+  No release warranted for this bounded accessibility fix.
+
 - Saved-host action accessibility: 555cf93 (`fix: expose accessible host actions`).
   Favorite/unfavorite and edit actions now
   announce localized, host-specific names from their full 48 dp buttons; the edit glyph is
@@ -122,6 +130,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed private-key delete-action labeling, 48 dp touch target, and
+  focused emulator coverage after a successful fetch; Claude's launcher files remain untouched.
+- 2026-08-24 Codex: corrected the Material navigation test selector after the first emulator
+  run, then passed focused API 36 instrumentation (1/1), all required gates, and cleared the claim.
 
 - 2026-08-24 Codex: claimed saved-host favorite/edit accessibility labels and 48 dp touch
   targets after fetching origin; Claude's launcher resources remain untouched.

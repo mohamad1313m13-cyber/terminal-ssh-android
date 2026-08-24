@@ -51,6 +51,7 @@
     <string name="keys_empty">هیچ کلید خصوصی‌ای وارد نشده است.</string>
     <string name="keys_import">وارد کردن کلید</string>
     <string name="keys_imported">کلید وارد شد</string>
+    <string name="key_delete">حذف کلید %1$s</string>
 
     <string name="settings_appearance">ظاهر</string>
     <string name="settings_theme">پوستهٔ ترمینال</string>

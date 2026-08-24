@@ -51,6 +51,7 @@
     <string name="keys_empty">No private keys imported.</string>
     <string name="keys_import">Import key</string>
     <string name="keys_imported">Key imported</string>
+    <string name="key_delete">Delete key %1$s</string>
 
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme">Terminal theme</string>
