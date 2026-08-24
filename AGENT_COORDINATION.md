@@ -65,7 +65,8 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- README release-link correction ready: the primary CTA and four listed downloads now point
+- README release-link correction: 8f92f76 (`docs: update current APK download links`). The
+  primary CTA and four listed downloads now point
   to `v0.4.1-test3`; all five changed GitHub URLs returned HTTP 200. Source, market, loop,
   and whitespace gates passed. Android builds were not rerun for this docs-only increment
   while Claude's launcher resources are intentionally incomplete. No release warranted.
@@ -75,8 +76,8 @@ emulator, and visually inspect the launcher result before committing.
   48 dp target; instrumentation proves that both distinct actions are discoverable and that
   selecting one removes only its intended session. Verified in an isolated clean checkout
   because Claude's active launcher rebuild temporarily has duplicate mdpi resource names.
-- Push status: blocked after two attempts because the HTTPS remote has no GitHub credentials
-  in either the sandboxed or approved execution context; local `main` contains the handoff.
+- Push status: commits through `8f92f76` are on `origin/main`; a later credentialed retry
+  succeeded without touching Claude's uncommitted launcher resources.
 - Tests: source, market, and loop gates passed; market and gplay unit tests, lint, and debug
   APK builds passed; both `TerminalKeyboardTest` cases passed on the API 36 emulator.
 - Release: none for this accessibility-only increment; the latest test release remains below.
@@ -109,6 +110,8 @@ Append short timestamped entries. Keep this section concise.
   origin and preserving Claude's active launcher-resource work unchanged.
 - 2026-08-24 Codex: verified all five test3 release URLs with HTTP 200 plus source, market,
   loop, and whitespace gates; claim cleared with launcher work still untouched.
+- 2026-08-24 Codex: pushed the four verified local commits through `8f92f76` after scoped
+  GitHub credentials became available; origin now includes the accessibility and link fixes.
 
 - 2026-08-24 Codex: claimed bounded TalkBack-specific session close labeling and targeted
   emulator coverage after confirming Claude's launcher resource claim and fetching origin.
