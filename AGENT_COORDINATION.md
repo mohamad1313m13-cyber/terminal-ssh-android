@@ -65,7 +65,8 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Font-size slider semantics repair: pending commit. The localized “Font size”/“اندازه قلم”
+- Font-size slider semantics repair: cd3a683 (`fix: restore adjustable font size semantics`).
+  The localized “Font size”/“اندازه قلم”
   node now explicitly exposes its 10–24 sp adjustable range, current value, and accessibility
   progress action after the API 36 execution audit found that naming the native slider erased
   `rangeInfo`. The strengthened market instrumentation regression passed on API 36 (1/1),
