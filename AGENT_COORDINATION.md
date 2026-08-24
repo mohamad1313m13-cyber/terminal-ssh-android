@@ -70,7 +70,9 @@ emulator, and visually inspect the launcher result before committing.
   localized Persian and English names instead of relying on glyph pronunciation. Focused API
   36 instrumentation passed (1/1). Source, market, loop, whitespace, Android-test compilation,
   both-flavor unit tests and lint, and both debug APK builds passed. Claude's launcher resources
-  and loop prompt were not staged or modified. No new release is warranted for this bounded fix.
+  and loop prompt were not staged or modified. Commits through `396986c` are pushed to
+  `origin/main`. No new release is warranted for this bounded fix. Remaining terminal interaction
+  risk is the credential-scoped live SSH keyboard/paste smoke documented below.
 
 - Settings toggle accessibility: 628a05b (`fix: make settings toggle rows accessible`). Each security switch now exposes one full-width,
   48 dp labeled toggle target with Switch role and checked state instead of limiting activation to
@@ -189,6 +191,8 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: claimed and completed localized terminal symbolic-key labels; focused API
   36 instrumentation passed after correcting a viewport-dependent assertion, and all required
   static/build gates passed without touching Claude's launcher work.
+- 2026-08-24 Codex: pushed the verified symbolic-key increment and handoff through `396986c`;
+  launcher work remains Claude-claimed and live SSH input remains blocked on a disposable endpoint.
 
 - 2026-08-24 Codex: completed full-row settings-toggle semantics and focused instrumentation;
   all static/build gates passed via Gradle's fallback compiler, with emulator execution pending.
