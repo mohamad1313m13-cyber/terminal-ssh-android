@@ -68,6 +68,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Home new-connection execution repair: f8710c3 (`fix: preserve new connection button semantics`).
+  The first API 36 run exposed the localized action as a generic accessibility view rather than
+  a native Button. The full clickable target now owns cleared Button/on-click semantics; the
+  focused market instrumentation regression then passed (1/1), verifying its localized name,
+  Button class, minimum 48 dp bounds, and opening the host editor. Source/market/loop gates,
+  whitespace, both-flavor unit tests and lint, and both debug APK builds passed. Claude's
+  launcher files and the unattributed `TerminalScreen.kt` edit were not staged or modified.
+  No APK release is warranted for this bounded accessibility correction. Next: a credentialed
+  worker should push local `main`, then complete the claimed launcher audit and rerun the pending
+  selected-session semantics test after `TerminalScreen.kt` is reconciled by its author.
+
 - Repository synchronization audit: required `git fetch origin --prune` succeeded and confirmed
   local `main` is four verified commits ahead of `origin/main` through `fadc847`. A scoped
   `git push origin main` then failed before remote transfer with
@@ -424,3 +435,7 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: committed IME focus sequencing fix `7214452`; all local gates, both
   flavor test/lint/APK builds, six emulator tests, install, rotation, and back smoke passed.
   Claim cleared; clean live SSH verification remains documented above.
+
+- 2026-08-24 Codex: API 36 exposed the new-connection action as a generic view on its first
+  focused run; corrected ownership of Button/on-click semantics, passed the rerun (1/1) and all
+  required gates, and committed `f8710c3` without staging launcher or terminal work.
