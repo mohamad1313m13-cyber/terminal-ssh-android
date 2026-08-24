@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Host-editor localization: pending commit. Required-host and invalid-port errors now use
+- Host-editor localization: 4f223b6 (`fix: localize host validation errors`). Required-host and invalid-port errors now use
   the existing localized resources instead of always showing Persian. Focused instrumentation
   covers English messages, rejection of both invalid forms, and a successful corrected save.
   Source, market, loop, whitespace, Android-test compilation, and both-flavor unit/lint/APK
