@@ -93,6 +93,10 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: pushed verified IME resilience coverage `b8744fa`; all gates, both
   flavor unit/lint/APK builds, the focused test, and all seven API 36 instrumentation tests
   passed. Claim cleared; no new APK published because this is test-only hardening.
+- 2026-08-24 Codex: further terminal interaction work is safely blocked: no disposable SSH
+  endpoint or credentials are present to observe live command/paste bytes, and Claude is using
+  the shared emulator for the claimed icon audit. Safe next task is a credential-scoped live
+  keyboard/paste/hardware-keyboard smoke after the icon work releases the emulator.
 
 - 2026-08-24 Claude: claimed the launcher icon rebuild from `/root/file_00000000143882438f4989f08e461e03.jpg`
   after a clean tracked worktree, successful `git fetch origin`, and local main level with origin.
