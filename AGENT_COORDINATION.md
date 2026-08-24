@@ -61,24 +61,29 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Version: 0.4.1 test release 2 plus unreleased IME stabilization
-- Commit: 7214452 (`fix: sequence terminal focus before IME reopen`)
+- Version: 0.4.1 test release 2 plus verified IME input-view fix
+- Commit: 8fc9fb8 (`fix: reopen IME through terminal input view`)
 - Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test2
-- Verified: source/market/loop gates; market and gplay compilation, unit tests, lint, and
-  debug APKs; six market emulator instrumentation tests; fresh market APK install; cold
-  launch plus rotation/back smoke. All completed locally on 2026-08-24.
-- Fixed: the keyboard action now requests terminal focus, waits one Compose frame for the
-  custom editor input connection, then shows the IME. This addresses emulator evidence of
-  input-connection timeouts and cancelled IME transitions during rapid reopen attempts.
-- Remaining risk: a clean live SSH dismiss/reopen tap could not be completed safely because
-  the pre-existing emulator form had password-derived text mixed into ordinary fields. Do
-  not dump/reuse that form; clear it and create a fresh disposable test profile manually.
-- Next: perform that clean live-session test (keyboard, paste, hardware keyboard), then
-  restore the launcher icon from the exact user artwork. Rotation/back already smoke-pass.
+- Verified: source/market/loop gates; market and gplay unit tests, lint, and debug APKs;
+  seven market emulator instrumentation tests on API 36. The new test launches a real idle
+  terminal, dismisses the soft keyboard with Back, taps the localized visible keyboard
+  action, and verifies Android reports the IME visible again. All passed on 2026-08-24.
+- Fixed: Compose focus alone did not reopen termlib's custom editor. The toolbar now finds
+  and focuses the embedded terminal text-editor view, then requests the IME through Android's
+  input manager, retaining the Compose keyboard controller as a fallback.
+- Remaining risk: live remote command input, paste, and a physical hardware-keyboard path
+  were not exercised; the regression test uses a credential-free idle terminal session.
+- Next: restore the launcher icon from the exact user artwork, then run a disposable live SSH
+  interaction smoke covering keyboard, paste, hardware keyboard, rotation, and Back.
 
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed bounded terminal keyboard-action emulator coverage and clean
+  disposable live-session smoke after clean tracked status and successful origin fetch.
+- 2026-08-24 Codex: reproduced the reopen failure on API 36, fixed the real termlib input-view
+  focus path, added a passing regression test, pushed `8fc9fb8`, and cleared the claim.
 
 - 2026-08-24 Codex: claimed the top-priority terminal keyboard-reopen scope after confirming
   a clean worktree; `git fetch origin` is currently blocked by read-only `.git/FETCH_HEAD`.
