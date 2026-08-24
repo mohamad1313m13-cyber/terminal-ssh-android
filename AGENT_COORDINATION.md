@@ -61,13 +61,15 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Version: 0.4.1 test release 2 plus verified IME input-view fix
+- Version: 0.4.1 test release 3
 - Commit: 8fc9fb8 (`fix: reopen IME through terminal input view`)
-- Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test2
+- Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test3
 - Verified: source/market/loop gates; market and gplay unit tests, lint, and debug APKs;
   seven market emulator instrumentation tests on API 36. The new test launches a real idle
   terminal, dismisses the soft keyboard with Back, taps the localized visible keyboard
   action, and verifies Android reports the IME visible again. All passed on 2026-08-24.
+- GitHub Actions: run `32689842441` completed green for verify, optional signed-market,
+  and publish; nine debug APK assets are public on the test release.
 - Fixed: Compose focus alone did not reopen termlib's custom editor. The toolbar now finds
   and focuses the embedded terminal text-editor view, then requests the IME through Android's
   input manager, retaining the Compose keyboard controller as a fallback.
@@ -84,6 +86,8 @@ Append short timestamped entries. Keep this section concise.
   disposable live-session smoke after clean tracked status and successful origin fetch.
 - 2026-08-24 Codex: reproduced the reopen failure on API 36, fixed the real termlib input-view
   focus path, added a passing regression test, pushed `8fc9fb8`, and cleared the claim.
+- 2026-08-24 Codex: published `v0.4.1-test3`; Actions run `32689842441` completed green
+  and the universal market test APK plus eight flavor/ABI debug APKs are public.
 
 - 2026-08-24 Codex: claimed the top-priority terminal keyboard-reopen scope after confirming
   a clean worktree; `git fetch origin` is currently blocked by read-only `.git/FETCH_HEAD`.
