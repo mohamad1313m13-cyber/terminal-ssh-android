@@ -94,7 +94,9 @@ fun PasteAndHostKeyDialogs(viewModel: AppViewModel, session: SshSession) {
 
     if (pasteRequested) {
         val text = remember(pasteRequested) { viewModel.clipboardText().orEmpty() }
-        val lines = text.count { it == '\n' } + 1
+        // Clipboard text can use LF, CRLF, or legacy CR separators. Kotlin's lineSequence
+        // handles all three and avoids letting CR-only command batches bypass confirmation.
+        val lines = text.lineSequence().count()
         val needsConfirm = viewModel.settings.confirmMultilinePaste && lines > 1
 
         // Empty clipboard or a single line: paste without interrupting the user.

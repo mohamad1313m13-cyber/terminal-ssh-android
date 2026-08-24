@@ -137,6 +137,32 @@ class TerminalKeyboardTest {
     }
 
     @Test
+    fun carriageReturnMultilinePasteRequiresConfirmation() {
+        app.sessions.add(idleSession(id = "cr-paste-confirmation", title = "CR paste test"))
+        clipboardManager().setPrimaryClip(ClipData.newPlainText("test", "first\rsecond"))
+
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            val dialogTitle = instrumentation.targetContext.getString(R.string.paste_confirm_title, 2)
+            val cancel = instrumentation.targetContext.getString(R.string.cancel)
+
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+            scenario.onActivity { activity ->
+                ViewModelProvider(activity)[AppViewModel::class.java]
+                    .pasteRequested.value = true
+            }
+
+            assertTrue(device.wait(Until.hasObject(By.text(dialogTitle)), UI_TIMEOUT_MS))
+            scenario.onActivity { activity ->
+                assertTrue(ViewModelProvider(activity)[AppViewModel::class.java].pasteRequested.value)
+            }
+            device.findObject(By.text(cancel)).click()
+            assertTrue(device.wait(Until.gone(By.text(dialogTitle)), UI_TIMEOUT_MS))
+        }
+    }
+
+    @Test
     fun modifierKeysExposeAndUpdateToggleState() {
         app.sessions.add(idleSession(id = "modifier-semantics", title = "Modifier test"))
 
