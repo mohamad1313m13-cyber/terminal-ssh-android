@@ -76,6 +76,8 @@ emulator, and visually inspect the launcher result before committing.
   in-process fallback completed successfully. No emulator is attached, so focused execution
   remains pending. Claude's launcher files and the unattributed `TerminalScreen.kt` change were
   not staged or modified. No release is warranted for this accessibility-only increment.
+  Commits `4f8c795` and `c5f57da` are preserved locally; the scoped push attempt lacked
+  GitHub HTTPS credentials.
   Next: complete and visually verify the claimed launcher rebuild, then execute this focused
   regression with the pending selected-session test on the emulator.
 
