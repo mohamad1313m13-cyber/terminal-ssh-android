@@ -65,6 +65,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Accessibility commit: 6a48ffb (`fix: identify session close actions`). Each session-tab
+  close control now announces its host title in Persian and English while retaining its
+  48 dp target; instrumentation proves that both distinct actions are discoverable and that
+  selecting one removes only its intended session. Verified in an isolated clean checkout
+  because Claude's active launcher rebuild temporarily has duplicate mdpi resource names.
+- Tests: source, market, and loop gates passed; market and gplay unit tests, lint, and debug
+  APK builds passed; both `TerminalKeyboardTest` cases passed on the API 36 emulator.
+- Release: none for this accessibility-only increment; the latest test release remains below.
+- Next: complete and visually verify the claimed launcher rebuild, then run a disposable live
+  SSH interaction smoke covering keyboard, paste, hardware keyboard, rotation, and Back.
+
 - Version: 0.4.1 test release 3
 - Commit: b8744fa (`test: harden terminal IME recovery coverage`)
 - Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test3
@@ -86,6 +97,12 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed bounded TalkBack-specific session close labeling and targeted
+  emulator coverage after confirming Claude's launcher resource claim and fetching origin.
+- 2026-08-24 Codex: verified session-specific close announcements in both locales and targeted
+  close behavior with both API 36 terminal tests; all static, unit, lint, and APK gates passed
+  in an isolated clean checkout. Committed `6a48ffb`; claim cleared, no release warranted.
 
 - 2026-08-24 Codex: claimed bounded terminal IME rotation/repeated-reopen instrumentation
   after a clean tracked worktree and successful `git fetch origin`; launcher resources remain
