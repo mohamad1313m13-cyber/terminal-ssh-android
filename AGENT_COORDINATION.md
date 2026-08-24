@@ -61,9 +61,11 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: verifying the preserved host-editor validation regression on API 36; claimed file:
-  `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`. No product,
-  terminal, navigation, or launcher files are in scope.
+- Codex: back-navigation session-preservation repair. Claimed files:
+  `app/src/main/java/app/terminalssh/secure/ui/RootScreen.kt` and
+  `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`.
+  Acceptance: Back from a secondary root tab returns to Hosts without finishing the Activity;
+  Back from Hosts retains normal system behavior.
 - Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
   updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
   reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
@@ -76,6 +78,28 @@ emulator, and visually inspect the launcher result before committing.
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Repository synchronization completed (2026-08-24): the two previously verified local commits,
+  unsupported deep-link removal `ff72b59` and its handoff `5886af8`, were pushed successfully;
+  local and `origin/main` now agree through `5886af8`. No product, test, terminal, launcher, or
+  loop-prompt file was staged or modified. No APK release is warranted because this only publishes
+  an already-verified bounded manifest correction. Next: the author of the host-editor draft should
+  reconcile its concurrent mutation and rerun it twice, while Claude completes the claimed launcher
+  rebuild and the author of `TerminalScreen.kt` reconciles that unattributed edit.
+
+- Host-editor verification stopped on concurrent file mutation (2026-08-24). Codex started the
+  API 36 `term36` AVD and ran only `HostEditValidationTest`; it executed 1/1 and failed with an
+  assertion, without external package removal. Logcat captured the test clicking the non-clickable
+  Save `TextView` child (`clickable=false`) immediately before the failure path. Before Codex could
+  apply the bounded clickable-ancestor repair, the claimed test changed concurrently at
+  12:33:21: its previously inspected `dismissKeyboard` parameter/calls disappeared and a different
+  `clickSheetAction` implementation replaced them. Codex made no test or product edit, staged
+  nothing, and cleared the claim rather than overwrite the new uncommitted version. Fetch and Git
+  writes are also blocked in this session by read-only `.git/FETCH_HEAD`; local status moved from
+  one to two commits ahead during the run. Next: the author of the current host-test draft should
+  reconcile it, claim it explicitly, make Save resolve its clickable ancestor, and require two
+  consecutive focused passes before staging. Claude's launcher and the unattributed terminal edit
+  remain untouched.
 
 - Unsupported deep-link surface removed (2026-08-24): the exported launcher activity no longer
   advertises `ssh://` VIEW/BROWSABLE handling that the app never implemented, avoiding silent link
@@ -464,6 +488,15 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed repository synchronization only, fetched origin, and pushed the two
+  already-verified commits through `5886af8`; cleared the claim without touching concurrent product,
+  test, terminal, launcher, or loop-prompt work.
+
+- 2026-08-24 Codex: claimed the preserved host-editor regression, booted API 36, and obtained a
+  real 1/1 assertion failure with logcat evidence that Save resolved to a non-clickable text child.
+  The claimed test then changed concurrently before the fix, so Codex stopped, cleared the claim,
+  and left all product, launcher, terminal, and test changes unstaged and untouched.
 
 - 2026-08-24 Codex: claimed the preserved host-editor regression after fetching origin. The
   initial focused run was obscured by a System UI ANR; after recovery, an external
