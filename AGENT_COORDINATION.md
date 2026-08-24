@@ -65,7 +65,8 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Saved-host action accessibility: pending commit. Favorite/unfavorite and edit actions now
+- Saved-host action accessibility: 555cf93 (`fix: expose accessible host actions`).
+  Favorite/unfavorite and edit actions now
   announce localized, host-specific names from their full 48 dp buttons; the edit glyph is
   a standard vertical-more icon. A focused API 36 emulator test verifies both 48 dp bounds,
   the favorite state/label transition, and opening the correct edit sheet. Source, market,
