@@ -65,15 +65,57 @@ emulator, and visually inspect the launcher result before committing.
 - Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
   updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
   reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
-  verification was invalidated by repeated shared-emulator package removal. Resume only with an
-  exclusive emulator window, rerun the focused test, then stage this file only if it passes.
-- Concurrent/unattributed: `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`
-  changed after Codex claimed it; its author must reconcile and verify it before staging.
+  verification was invalidated by repeated shared-emulator package removal. A later draft also
+  waits for each UIAutomator text replacement before pressing Save, but that change is unverified.
+  Resume only with an exclusive emulator/Gradle window, rerun the focused test twice, then stage
+  this file only if both passes succeed.
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Bottom-navigation regression repair (2026-08-24): live API 36 hierarchy inspection confirmed
+  the existing navigation-item ancestor correctly exposes selected state. The regression now
+  disambiguates the bottom Hosts label from the same-named page heading and correlates that label
+  with the selected semantics owner's bounds. Two consecutive focused runs passed (1/1 each).
+  Source/market/loop gates, whitespace, both-flavor unit tests and lint, and both debug APK builds
+  passed. The ineffective `RootScreen.kt` draft was removed; only the test is part of this change.
+  Claude's launcher files, the host-editor draft, and the unattributed terminal edit were not
+  staged. No release is warranted for test-only reliability. Next: verify the host-editor draft
+  twice in an exclusive Gradle/emulator window, while Claude completes the launcher audit.
+
+- Host-editor verification remains blocked by concurrent instrumentation (2026-08-24). The first
+  exclusive-window attempt ran the intended `HostEditValidationTest` and failed deterministically
+  at its invalid-port message assertion (`HostEditValidationTest.kt:71`). Codex added explicit
+  waits proving each UIAutomator field replacement completed before Save. During the rerun, Gradle
+  reported `Process crashed`; device logcat proves a different concurrent invocation actually
+  started `RootNavigationAccessibilityTest` at 11:50:27, then removed both debug packages at
+  11:50:34 while Codex's task was active. No product, launcher, navigation, or terminal file was
+  staged or committed. The host-test draft remains unverified. Next safe task: reserve both the
+  emulator and Gradle runner exclusively, rerun only `HostEditValidationTest` twice, then run full
+  gates and commit only that test if green.
+
+- Bottom-navigation execution evidence (2026-08-24): Codex started the existing API 36
+  `term36` AVD and executed `RootNavigationAccessibilityTest`. The initially claimed draft
+  compiled, then failed because its `By.text(tab_hosts)` lookup selected the Hosts page heading
+  rather than the bottom-navigation label. A live UIAutomator dump proved the actual navigation
+  item ancestor already exposed `selected=true`. While that evidence was being inspected,
+  `RootScreen.kt` and the regression changed concurrently to put selected state on the visible
+  label; Codex did not overwrite or stage those edits. Execution of that concurrent version ended
+  with `Process crashed`; an immediate retry started 0 tests after `emulator-5554` disconnected
+  (`closed`, then `device not found`). No variant is verified and no commit was made. Next: reserve
+  an exclusive emulator window, reconcile the hierarchy-based selector versus the label semantics
+  approach, and require two clean focused passes before staging either file.
+
+- Bottom-navigation accessibility repair remains an unverified draft. The original focused
+  API 36 run failed because the visible Hosts text node was not selected; hierarchy-driven
+  retries proved no ancestor exposed selected state. Explicit merged Tab/selected semantics
+  and an owner-node regression compile successfully (Kotlin daemon was canceled, in-process
+  fallback succeeded), but the final execution ended with `No connected devices` after the
+  shared emulator disappeared. No product/test file was staged or committed. Next: reserve an
+  exclusive API 36 emulator window, rerun `RootNavigationAccessibilityTest`, then run full gates
+  and commit only if it passes.
 
 - Host-editor regression repair is blocked pending an exclusive emulator window. Live API 36
   hierarchy inspection proved the current entry is the merged, localized New connection Button
@@ -355,6 +397,15 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: the intended host-validation run reached a deterministic invalid-port
+  assertion; after adding field-update synchronization, its rerun was displaced by a concurrent
+  navigation-test invocation that removed both debug packages. Cleared the claim without staging
+  or committing; exact logcat evidence and the exclusive-runner next step are recorded above.
+
+- 2026-08-24 Codex: the visible-label navigation semantics draft compiled, but focused execution
+  crashed and the immediate retry lost `emulator-5554` before running any tests. Cleared the claim
+  without staging or committing; launcher and unattributed terminal edits remained untouched.
 
 - 2026-08-24 Codex: inspected the API 36 hierarchy and drafted a repair for the stale host-editor
   entry/field selectors plus English app-locale setup. Compilation passed; execution advanced to

@@ -33,14 +33,32 @@ class RootNavigationAccessibilityTest {
                 assertFalse("$label was announced twice", device.hasObject(By.desc(label)))
             }
 
-            val hosts = device.findObject(By.text(labels.first()))
-            val settings = device.findObject(By.text(labels.last()))
-            assertTrue("initial tab was not selected", hosts.isSelected)
+            val settings = navigationLabel(labels.last())
+            assertTrue("initial tab was not selected", isNavigationSelected(labels.first()))
 
             settings.click()
-            assertTrue(device.wait(Until.hasObject(By.text(labels.last()).selected(true)), TIMEOUT_MS))
-            assertFalse("previous tab remained selected", hosts.isSelected)
+            assertTrue("settings tab did not become selected", waitUntil { isNavigationSelected(labels.last()) })
+            assertFalse("previous tab remained selected", isNavigationSelected(labels.first()))
         }
+    }
+
+    private fun isNavigationSelected(label: String): Boolean {
+        val labelBounds = navigationLabel(label).visibleBounds
+        return device.findObjects(By.selected(true)).any { selected ->
+            selected.visibleBounds.contains(labelBounds.centerX(), labelBounds.centerY())
+        }
+    }
+
+    private fun navigationLabel(label: String) =
+        device.findObjects(By.text(label)).maxBy { it.visibleBounds.centerY() }
+
+    private fun waitUntil(condition: () -> Boolean): Boolean {
+        val deadline = System.currentTimeMillis() + TIMEOUT_MS
+        while (System.currentTimeMillis() < deadline) {
+            if (condition()) return true
+            Thread.sleep(50)
+        }
+        return condition()
     }
 
     private companion object {
