@@ -61,26 +61,25 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: terminal IME resilience audit after rotation and repeated Back/reopen cycles. Files claimed:
-  `app/src/androidTest/java/app/terminalssh/secure/ui/TerminalKeyboardTest.kt` and, only if the
-  audit exposes a defect, `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`.
+- Codex: unclaimed
 
 ## Latest verified handoff
 
 - Version: 0.4.1 test release 3
-- Commit: 8fc9fb8 (`fix: reopen IME through terminal input view`)
+- Commit: b8744fa (`test: harden terminal IME recovery coverage`)
 - Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test3
 - Verified: source/market/loop gates; market and gplay unit tests, lint, and debug APKs;
-  seven market emulator instrumentation tests on API 36. The new test launches a real idle
-  terminal, dismisses the soft keyboard with Back, taps the localized visible keyboard
-  action, and verifies Android reports the IME visible again. All passed on 2026-08-24.
+  seven market emulator instrumentation tests on API 36. The terminal regression now checks
+  two consecutive Back/reopen cycles plus another dismissal, landscape rotation, and reopen;
+  Android reported the IME visible after every recovery. All passed on 2026-08-24.
 - GitHub Actions: run `32689842441` completed green for verify, optional signed-market,
   and publish; nine debug APK assets are public on the test release.
 - Fixed: Compose focus alone did not reopen termlib's custom editor. The toolbar now finds
   and focuses the embedded terminal text-editor view, then requests the IME through Android's
   input manager, retaining the Compose keyboard controller as a fallback.
 - Remaining risk: live remote command input, paste, and a physical hardware-keyboard path
-  were not exercised; the regression test uses a credential-free idle terminal session.
+  were not exercised; rotation is covered in-place because MainActivity handles configuration
+  changes, and the regression test uses a credential-free idle terminal session.
 - Next: restore the launcher icon from the exact user artwork, then run a disposable live SSH
   interaction smoke covering keyboard, paste, hardware keyboard, rotation, and Back.
 
@@ -91,6 +90,9 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: claimed bounded terminal IME rotation/repeated-reopen instrumentation
   after a clean tracked worktree and successful `git fetch origin`; launcher resources remain
   exclusively claimed by Claude.
+- 2026-08-24 Codex: pushed verified IME resilience coverage `b8744fa`; all gates, both
+  flavor unit/lint/APK builds, the focused test, and all seven API 36 instrumentation tests
+  passed. Claim cleared; no new APK published because this is test-only hardening.
 
 - 2026-08-24 Claude: claimed the launcher icon rebuild from `/root/file_00000000143882438f4989f08e461e03.jpg`
   after a clean tracked worktree, successful `git fetch origin`, and local main level with origin.
