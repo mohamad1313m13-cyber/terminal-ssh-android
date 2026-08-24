@@ -61,9 +61,21 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: unclaimed
+- Codex: terminal toolbar symbolic-key accessibility labels and focused instrumentation.
+  Files claimed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`,
+  `app/src/main/res/values/strings.xml`, `app/src/main/res/values-en/strings.xml`, and
+  `app/src/androidTest/java/app/terminalssh/secure/ui/TerminalKeyboardTest.kt`.
 
 ## Latest verified handoff
+
+- Settings toggle accessibility: pending commit. Each security switch now exposes one full-width,
+  48 dp labeled toggle target with Switch role and checked state instead of limiting activation to
+  the trailing control. Focused instrumentation covers bounds, clickability, initial/changed state,
+  and persistence. Source, market, loop, whitespace, Android-test compilation, and both-flavor
+  unit/lint/APK gates passed. The shared Kotlin daemon was concurrently canceled and its incremental
+  cache reported corruption, but Gradle's clean in-process fallback completed successfully. No
+  emulator is attached, so focused execution remains pending. Other terminal/icon claims were not
+  staged or modified by this increment; no release warranted.
 
 - Host-editor localization: 4f223b6 (`fix: localize host validation errors`). Required-host and invalid-port errors now use
   the existing localized resources instead of always showing Persian. Focused instrumentation
@@ -168,6 +180,9 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: completed full-row settings-toggle semantics and focused instrumentation;
+  all static/build gates passed via Gradle's fallback compiler, with emulator execution pending.
 
 - 2026-08-24 Codex: claimed and completed localized host-editor validation with focused
   instrumentation; all static/build gates passed, with execution pending an attached emulator.
