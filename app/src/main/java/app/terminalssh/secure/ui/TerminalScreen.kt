@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.CircleShape
@@ -202,7 +203,11 @@ private fun SessionTabs(
                         else MaterialTheme.colorScheme.surface,
                     )
                     .border(1.dp, if (selected) Turquoise.copy(alpha = 0.4f) else Stroke, RoundedCornerShape(12.dp))
-                    .clickable { onSelect(session.id) }
+                    .selectable(
+                        selected = selected,
+                        role = Role.Tab,
+                        onClick = { onSelect(session.id) },
+                    )
                     .padding(start = 12.dp, end = 6.dp, top = 7.dp, bottom = 7.dp),
             ) {
                 StatusDot(state)

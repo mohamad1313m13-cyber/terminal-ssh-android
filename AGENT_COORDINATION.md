@@ -65,6 +65,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Session-tab accessibility: pending commit (`fix: expose selected terminal session`). Live
+  session tabs now use selectable tab semantics and report which terminal is active. Focused
+  instrumentation covers the initial selected state and its transition when a second session
+  is chosen; Android-test compilation passed, but no emulator was attached, so execution remains
+  pending. Source/market/loop gates, whitespace, both-flavor unit tests and lint, and both debug
+  APK builds passed. The shared Kotlin daemon was canceled during compilation; Gradle's clean
+  in-process fallback completed successfully. Claude's launcher resources and loop prompt were
+  not staged or modified. No release is warranted for this accessibility-only increment.
+  Next safe task: complete and visually verify the claimed launcher rebuild, then execute this
+  focused session-tab test with the launcher/terminal emulator smoke.
+
 - CR-only multiline paste safety: bd47c23 (`fix: confirm CR-only multiline paste`). Paste
   confirmation now recognizes LF, CRLF, and CR separators, preventing CR-only command batches
   from bypassing the multiline safety dialog. Focused API 36 instrumentation passed (1/1), as
@@ -197,6 +208,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: added selected-state/tab semantics for live terminal sessions and focused
+  instrumentation; Android-test compilation and every static/unit/lint/APK gate passed, with
+  emulator execution pending because no device is attached. Claude's launcher work was untouched.
 
 - 2026-08-24 Codex: fixed CR-only multiline paste detection, passed focused API 36
   instrumentation (1/1) and every required static/build gate, and committed `bd47c23` without

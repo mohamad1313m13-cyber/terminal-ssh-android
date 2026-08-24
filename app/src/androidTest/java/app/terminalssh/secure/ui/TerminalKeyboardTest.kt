@@ -109,6 +109,30 @@ class TerminalKeyboardTest {
     }
 
     @Test
+    fun sessionTabsExposeAndUpdateSelectedState() {
+        val firstTitle = "First selectable host"
+        val secondTitle = "Second selectable host"
+        app.sessions.add(idleSession(id = "first-selectable-session", title = firstTitle))
+        app.sessions.add(idleSession(id = "second-selectable-session", title = secondTitle))
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+
+            val firstSession = device.wait(Until.findObject(By.text(firstTitle)), UI_TIMEOUT_MS)
+            val secondSession = device.wait(Until.findObject(By.text(secondTitle)), UI_TIMEOUT_MS)
+            assertTrue(firstSession.isSelected)
+            assertFalse(secondSession.isSelected)
+
+            secondSession.click()
+
+            assertFalse(device.wait(Until.findObject(By.text(firstTitle)), UI_TIMEOUT_MS).isSelected)
+            assertTrue(device.wait(Until.findObject(By.text(secondTitle)), UI_TIMEOUT_MS).isSelected)
+        }
+    }
+
+    @Test
     fun multilinePasteRequiresConfirmationAndCancelDoesNotPaste() {
         app.sessions.add(idleSession(id = "paste-confirmation", title = "Paste test"))
         clipboardManager().setPrimaryClip(ClipData.newPlainText("test", "first\nsecond"))
