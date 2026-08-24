@@ -61,9 +61,9 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Version: 0.4.1 test release plus verified keyboard UX increment
+- Version: 0.4.1 test release 2
 - Commit: 5256e0d (`fix: add reliable terminal keyboard action`)
-- Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test1
+- Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test2
 - Verified: source/market/loop gates; market and gplay compilation, unit tests, lint, and
   debug APKs; six market emulator instrumentation tests; market debug APK install/launch.
 - Fixed: an always-visible 48 dp terminal keyboard action now refocuses the terminal and
@@ -82,3 +82,6 @@ Append short timestamped entries. Keep this section concise.
   a clean worktree; `git fetch origin` is currently blocked by read-only `.git/FETCH_HEAD`.
 - 2026-08-24 Codex: verified and committed keyboard action/accessibility increment `5256e0d`;
   claim cleared. Fetch succeeded with scoped approval; live-session manual tap remains above.
+- 2026-08-24 Codex: published `v0.4.1-test2`; GitHub Actions run `32687774746`
+  completed green for verify, optional signed-market, and publish jobs. Nine debug APK assets
+  are public, including `TerminalSSH-v0.4.1-test2-market-universal-debug.apk`.
