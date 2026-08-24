@@ -13,6 +13,9 @@
     <string name="quick_connect">اتصال سریع</string>
     <string name="recent">اخیر</string>
     <string name="favorites">نشان‌شده</string>
+    <string name="host_favorite">نشان کردن %1$s</string>
+    <string name="host_unfavorite">برداشتن نشان %1$s</string>
+    <string name="host_edit">ویرایش %1$s</string>
 
     <string name="field_label">نام نمایشی</string>
     <string name="field_host">آدرس سرور</string>

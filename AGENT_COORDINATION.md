@@ -65,6 +65,14 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Saved-host action accessibility: pending commit. Favorite/unfavorite and edit actions now
+  announce localized, host-specific names from their full 48 dp buttons; the edit glyph is
+  a standard vertical-more icon. A focused API 36 emulator test verifies both 48 dp bounds,
+  the favorite state/label transition, and opening the correct edit sheet. Source, market,
+  and loop gates; whitespace; both-flavor unit tests, lint, and debug APK builds passed.
+  The first emulator run exposed 24 dp child-icon semantics; moving semantics to the parent
+  button fixed it and the rerun passed 1/1. No release warranted for this bounded fix.
+
 - Multiline paste safety coverage: 35ca138 (`test: cover multiline paste cancellation`).
   API 36 instrumentation proves a two-line clipboard opens the localized confirmation and
   Cancel dismisses it while clearing the paste request. Target Android-test compilation,
@@ -112,6 +120,12 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed saved-host favorite/edit accessibility labels and 48 dp touch
+  targets after fetching origin; Claude's launcher resources remain untouched.
+- 2026-08-24 Codex: API 36 caught inner-icon 24 dp semantics; moved labels to the full
+  buttons, passed focused instrumentation (1/1) and all required static/build gates, and
+  cleared the claim without touching Claude's launcher work.
 
 - 2026-08-24 Codex: claimed bounded emulator coverage for multiline paste confirmation and
   cancellation after fetching origin; Claude's launcher resources remain untouched.

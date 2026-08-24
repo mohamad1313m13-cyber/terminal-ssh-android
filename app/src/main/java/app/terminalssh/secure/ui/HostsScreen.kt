@@ -24,12 +24,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Dns
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -41,6 +43,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -294,19 +298,31 @@ private fun HostCard(
                 }
             }
         }
-        Icon(
-            imageVector = if (profile.favorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
-            contentDescription = null,
-            tint = if (profile.favorite) Turquoise else TextSecondary,
-            modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp),
+        val favoriteDescription = stringResource(
+            if (profile.favorite) R.string.host_unfavorite else R.string.host_favorite,
+            profile.displayName,
         )
-        Spacer(Modifier.width(4.dp))
-        Text(
-            "…",
-            style = MaterialTheme.typography.titleLarge,
-            color = TextSecondary,
-            modifier = Modifier.clickable(onClick = onEdit).padding(horizontal = 8.dp),
-        )
+        IconButton(
+            onClick = onToggleFavorite,
+            modifier = Modifier.semantics { contentDescription = favoriteDescription },
+        ) {
+            Icon(
+                imageVector = if (profile.favorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                contentDescription = null,
+                tint = if (profile.favorite) Turquoise else TextSecondary,
+            )
+        }
+        val editDescription = stringResource(R.string.host_edit, profile.displayName)
+        IconButton(
+            onClick = onEdit,
+            modifier = Modifier.semantics { contentDescription = editDescription },
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = null,
+                tint = TextSecondary,
+            )
+        }
     }
 }
 

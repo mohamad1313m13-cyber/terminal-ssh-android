@@ -13,6 +13,9 @@
     <string name="quick_connect">Quick connect</string>
     <string name="recent">Recent</string>
     <string name="favorites">Pinned</string>
+    <string name="host_favorite">Favorite %1$s</string>
+    <string name="host_unfavorite">Remove %1$s from favorites</string>
+    <string name="host_edit">Edit %1$s</string>
 
     <string name="field_label">Display name</string>
     <string name="field_host">Host</string>
