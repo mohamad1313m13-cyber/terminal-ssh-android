@@ -38,6 +38,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import app.terminalssh.secure.R
@@ -165,6 +167,7 @@ fun SnippetSheet(
             }
 
             snippets.forEach { entry ->
+                val deleteDescription = stringResource(R.string.snippet_delete, entry.name)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -187,10 +190,13 @@ fun SnippetSheet(
                     TextButton(onClick = { onInsert(entry) }) {
                         Text(stringResource(R.string.snippets_insert))
                     }
-                    IconButton(onClick = { onDelete(entry) }) {
+                    IconButton(
+                        onClick = { onDelete(entry) },
+                        modifier = Modifier.semantics { contentDescription = deleteDescription },
+                    ) {
                         Icon(
                             Icons.Outlined.Delete,
-                            contentDescription = stringResource(R.string.delete),
+                            contentDescription = null,
                             tint = TextSecondary,
                         )
                     }
