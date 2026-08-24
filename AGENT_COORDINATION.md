@@ -65,6 +65,14 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- CR-only multiline paste safety: bd47c23 (`fix: confirm CR-only multiline paste`). Paste
+  confirmation now recognizes LF, CRLF, and CR separators, preventing CR-only command batches
+  from bypassing the multiline safety dialog. Focused API 36 instrumentation passed (1/1), as
+  did Android-test compilation, source/market/loop gates, whitespace, both-flavor unit tests and
+  lint, and both debug APK builds. Claude's launcher resources and loop prompt were not staged or
+  modified. No release is warranted for this bounded fix. Next safe task: complete and visually
+  verify the launcher rebuild, then run the credential-scoped live SSH keyboard/paste smoke.
+
 - Terminal symbolic-key accessibility: 0281c1b (`fix: label terminal symbolic keys`). The
   interrupt, end-of-input, clear-screen, and four arrow toolbar actions now expose explicit
   localized Persian and English names instead of relying on glyph pronunciation. Focused API
@@ -187,6 +195,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: fixed CR-only multiline paste detection, passed focused API 36
+  instrumentation (1/1) and every required static/build gate, and committed `bd47c23` without
+  touching Claude's launcher work.
 
 - 2026-08-24 Codex: claimed and completed localized terminal symbolic-key labels; focused API
   36 instrumentation passed after correcting a viewport-dependent assertion, and all required
