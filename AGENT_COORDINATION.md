@@ -65,6 +65,14 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Settings palette accessibility: pending commit. Each terminal palette now exposes a
+  localized name, radio-button role and selected state from a 48 dp target; six targets fit
+  a 360 dp handset without clipping. The focused API 36 test compiles and covers bounds,
+  initial/changed selection, and persistence. Source, market, loop, whitespace, Android-test
+  compilation, and both-flavor unit/lint/APK gates passed. No emulator was attached, so the
+  focused instrumentation test remains authored but not executed. Claude's launcher files
+  were not staged or modified; no release warranted for this bounded accessibility fix.
+
 - Snippet delete accessibility: acd567c (`fix: identify snippet delete actions`). Each
   delete action now announces its snippet name from the full Material button. A focused API
   36 emulator test verified two distinct localized actions, a minimum 48 dp bound, removal of
@@ -140,6 +148,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed terminal-palette names, selected-state semantics, 48 dp targets,
+  and focused emulator coverage; Claude's launcher resources remain untouched.
+- 2026-08-24 Codex: passed Android-test compilation and all static/unit/lint/APK gates;
+  cleared the palette claim with focused instrumentation pending an available emulator.
 
 - 2026-08-24 Codex: claimed snippet-specific delete accessibility labels, 48 dp action
   target, and focused emulator coverage; Claude's launcher resources remain untouched.

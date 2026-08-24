@@ -56,6 +56,12 @@
 
     <string name="settings_appearance">ظاهر</string>
     <string name="settings_theme">پوستهٔ ترمینال</string>
+    <string name="settings_palette_persian_neon">نئون ایرانی</string>
+    <string name="settings_palette_oled">مشکی OLED</string>
+    <string name="settings_palette_midnight">نیمه‌شب</string>
+    <string name="settings_palette_solarized">سولاریزد</string>
+    <string name="settings_palette_classic">سبز کلاسیک</string>
+    <string name="settings_palette_amber">کهربایی</string>
     <string name="settings_fontsize">اندازه قلم</string>
     <string name="settings_fontsize_value">اندازه قلم %1$d</string>
     <string name="settings_security">امنیت</string>

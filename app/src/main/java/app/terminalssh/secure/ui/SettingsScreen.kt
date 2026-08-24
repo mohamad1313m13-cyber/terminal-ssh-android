@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -43,6 +44,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -100,11 +104,23 @@ fun SettingsScreen(viewModel: AppViewModel) {
                 style = MaterialTheme.typography.labelLarge,
             )
             Spacer(Modifier.height(10.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            // Six 48 dp targets plus 6 dp gaps fit the 320 dp content width of a common
+            // 360 dp handset, retaining accessible targets without horizontal clipping.
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 TerminalPalettes.forEach { palette ->
+                    val paletteName = stringResource(
+                        when (palette.id) {
+                            "oled" -> R.string.settings_palette_oled
+                            "midnight" -> R.string.settings_palette_midnight
+                            "solarized" -> R.string.settings_palette_solarized
+                            "classic" -> R.string.settings_palette_classic
+                            "amber" -> R.string.settings_palette_amber
+                            else -> R.string.settings_palette_persian_neon
+                        },
+                    )
                     Box(
                         Modifier
-                            .size(40.dp)
+                            .size(48.dp)
                             .clip(CircleShape)
                             .background(palette.background)
                             .border(
@@ -112,7 +128,11 @@ fun SettingsScreen(viewModel: AppViewModel) {
                                 color = if (theme == palette.id) Turquoise else Stroke,
                                 shape = CircleShape,
                             )
-                            .clickable {
+                            .semantics { contentDescription = paletteName }
+                            .selectable(
+                                selected = theme == palette.id,
+                                role = Role.RadioButton,
+                            ) {
                                 theme = palette.id
                                 settings.themeName = palette.id
                             },

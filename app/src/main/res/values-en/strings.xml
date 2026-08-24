@@ -56,6 +56,12 @@
 
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme">Terminal theme</string>
+    <string name="settings_palette_persian_neon">Persian neon</string>
+    <string name="settings_palette_oled">OLED black</string>
+    <string name="settings_palette_midnight">Midnight</string>
+    <string name="settings_palette_solarized">Solarized</string>
+    <string name="settings_palette_classic">Classic green</string>
+    <string name="settings_palette_amber">Amber</string>
     <string name="settings_fontsize">Font size</string>
     <string name="settings_fontsize_value">Font size %1$d</string>
     <string name="settings_security">Security</string>
