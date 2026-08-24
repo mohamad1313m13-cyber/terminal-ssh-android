@@ -1,7 +1,11 @@
 package app.terminalssh.secure.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.provider.Settings
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,7 +17,9 @@ import app.terminalssh.secure.TerminalApp
 import app.terminalssh.secure.model.AuthMethod
 import app.terminalssh.secure.model.HostProfile
 import app.terminalssh.secure.ssh.SshSession
+import app.terminalssh.secure.vm.AppViewModel
 import org.junit.After
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -26,6 +32,7 @@ class TerminalKeyboardTest {
     private val device = UiDevice.getInstance(instrumentation)
     private lateinit var app: TerminalApp
     private var previousHardwareKeyboardSetting = "0"
+    private var previousPasteConfirmation = true
 
     @Before
     fun setUp() {
@@ -33,12 +40,16 @@ class TerminalKeyboardTest {
         app.sessions.closeAll()
         previousHardwareKeyboardSetting = readSecureSetting("show_ime_with_hard_keyboard")
         writeSecureSetting("show_ime_with_hard_keyboard", "1")
+        previousPasteConfirmation = app.settings.confirmMultilinePaste
+        app.settings.confirmMultilinePaste = true
     }
 
     @After
     fun tearDown() {
         device.setOrientationNatural()
         app.sessions.closeAll()
+        app.settings.confirmMultilinePaste = previousPasteConfirmation
+        clipboardManager().clearPrimaryClip()
         writeSecureSetting("show_ime_with_hard_keyboard", previousHardwareKeyboardSetting)
     }
 
@@ -97,6 +108,34 @@ class TerminalKeyboardTest {
         }
     }
 
+    @Test
+    fun multilinePasteRequiresConfirmationAndCancelDoesNotPaste() {
+        app.sessions.add(idleSession(id = "paste-confirmation", title = "Paste test"))
+        clipboardManager().setPrimaryClip(ClipData.newPlainText("test", "first\nsecond"))
+
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            val dialogTitle = instrumentation.targetContext.getString(R.string.paste_confirm_title, 2)
+            val cancel = instrumentation.targetContext.getString(R.string.cancel)
+
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+            scenario.onActivity { activity ->
+                ViewModelProvider(activity)[AppViewModel::class.java]
+                    .pasteRequested.value = true
+            }
+
+            assertTrue(device.wait(Until.hasObject(By.text(dialogTitle)), UI_TIMEOUT_MS))
+            device.findObject(By.text(cancel)).click()
+            assertTrue(device.wait(Until.gone(By.text(dialogTitle)), UI_TIMEOUT_MS))
+
+            scenario.onActivity { activity ->
+                val viewModel = ViewModelProvider(activity)[AppViewModel::class.java]
+                assertFalse(viewModel.pasteRequested.value)
+            }
+        }
+    }
+
     private fun dismissAndReopenKeyboard(
         scenario: ActivityScenario<MainActivity>,
         keyboardAction: String,
@@ -148,6 +187,9 @@ class TerminalKeyboardTest {
         instrumentation.uiAutomation.executeShellCommand("settings put secure $name $value").close()
         device.waitForIdle()
     }
+
+    private fun clipboardManager(): ClipboardManager =
+        instrumentation.targetContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     private companion object {
         const val UI_TIMEOUT_MS = 5_000L
