@@ -77,8 +77,10 @@ emulator, and visually inspect the launcher result before committing.
   two consecutive focused runs passed (1/1 each). Android-test compilation, source/market/loop
   gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed.
   Claude's launcher resources and the unattributed `TerminalScreen.kt` edit were not staged
-  or modified. No release is warranted for test-only coverage. Next: complete and visually
-  verify the claimed launcher rebuild, then reconcile the session-tab semantics edit.
+  or modified. Commits `bc99054` and `595c5d1` are preserved locally; the scoped push failed
+  before transfer because GitHub HTTPS credentials are unavailable. No release is warranted
+  for test-only coverage. Next: a credentialed worker should push local `main`, complete and
+  visually verify the claimed launcher rebuild, then reconcile the session-tab semantics edit.
 
 - Bottom-navigation accessible-name cleanup: bd02539 (`fix: avoid duplicate navigation labels`).
   Decorative tab icons no longer repeat the localized visible label, while a focused
