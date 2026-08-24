@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Private-key delete accessibility: pending commit (`fix: expose accessible key deletion`).
+- Private-key delete accessibility: 71a941d (`fix: expose accessible key deletion`).
   Each delete action now announces the intended key name from a full 48 dp Material button.
   API 36 instrumentation verified the localized action, minimum 48 dp bounds, disappearance
   after activation, and deletion of the intended metadata record (1/1). Source, market, and
