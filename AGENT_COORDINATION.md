@@ -65,6 +65,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Font-size slider semantics repair: pending commit. The localized “Font size”/“اندازه قلم”
+  node now explicitly exposes its 10–24 sp adjustable range, current value, and accessibility
+  progress action after the API 36 execution audit found that naming the native slider erased
+  `rangeInfo`. The strengthened market instrumentation regression passed on API 36 (1/1),
+  including changing and persisting 17 sp to 18 sp through `ACTION_SET_PROGRESS`.
+  Source/market/loop gates, whitespace, both-flavor unit tests and lint,
+  and both debug APK builds passed. Claude's claimed launcher resources and loop prompt were
+  not staged or modified. No APK release is warranted for this bounded accessibility repair.
+  Next safe task: after Claude clears the launcher/emulator claim, rerun and repair the pending
+  selected-session accessibility regression, then perform the credential-scoped live SSH
+  keyboard/paste/hardware-keyboard smoke when a disposable endpoint is available.
+
 - Pending accessibility execution audit: the API 36 emulator executed the two previously
   compile-only regressions, and both failed (0/2). The font-size node with the localized
   description had no `rangeInfo` (`SettingsAccessibilityTest.kt:77`), and the text node for
@@ -234,6 +246,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: repaired the font-size slider's localized adjustable semantics, passed the
+  strengthened API 36 range/value/action regression (1/1) and every required static/unit/lint/APK
+  gate, then cleared the claim without staging or modifying Claude's launcher resources or loop prompt.
 
 - 2026-08-24 Codex: reconciled the concurrent accessibility audit, confirmed the shared
   emulator had disappeared during a duplicate focused run, and pushed the verified audit and

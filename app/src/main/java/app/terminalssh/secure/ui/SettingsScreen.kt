@@ -45,8 +45,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -60,6 +64,7 @@ import app.terminalssh.secure.ui.theme.TerminalPalettes
 import app.terminalssh.secure.ui.theme.TextSecondary
 import app.terminalssh.secure.ui.theme.Turquoise
 import app.terminalssh.secure.vm.AppViewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun SettingsScreen(viewModel: AppViewModel) {
@@ -163,7 +168,20 @@ fun SettingsScreen(viewModel: AppViewModel) {
                 onValueChange = { fontSize = it.toInt() },
                 onValueChangeFinished = { settings.fontSizeSp = fontSize },
                 valueRange = 10f..24f,
-                modifier = Modifier.semantics { contentDescription = fontSizeLabel },
+                modifier = Modifier.clearAndSetSemantics {
+                    contentDescription = fontSizeLabel
+                    progressBarRangeInfo = ProgressBarRangeInfo(
+                        current = fontSize.toFloat(),
+                        range = 10f..24f,
+                        steps = 13,
+                    )
+                    setProgress { requestedValue ->
+                        val adjustedValue = requestedValue.roundToInt().coerceIn(10, 24)
+                        fontSize = adjustedValue
+                        settings.fontSizeSp = adjustedValue
+                        true
+                    }
+                },
             )
         }
 

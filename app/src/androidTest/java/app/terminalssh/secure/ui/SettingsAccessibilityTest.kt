@@ -1,5 +1,6 @@
 package app.terminalssh.secure.ui
 
+import android.os.Bundle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -76,6 +77,18 @@ class SettingsAccessibilityTest {
                 assertNotNull("font-size accessibility node was missing", sliderNode)
                 assertNotNull("font-size slider lost adjustable range semantics", sliderNode?.rangeInfo)
                 assertEquals(17f, sliderNode?.rangeInfo?.current ?: Float.NaN, 0.01f)
+
+                val progressArguments = Bundle().apply {
+                    putFloat(AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE, 18f)
+                }
+                assertTrue(
+                    sliderNode!!.performAction(
+                        AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_PROGRESS.id,
+                        progressArguments,
+                    ),
+                )
+                instrumentation.waitForIdleSync()
+                assertEquals(18, app.settings.fontSizeSp)
             }
         } finally {
             app.settings.fontSizeSp = previousFontSize
