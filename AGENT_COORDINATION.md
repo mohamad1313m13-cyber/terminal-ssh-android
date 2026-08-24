@@ -82,6 +82,8 @@ emulator, and visually inspect the launcher result before committing.
   roughly 0.4 seconds after the test started; Android consequently reported `Process crashed`.
   This is external runner interference, not a test assertion result. The draft remains unverified
   and uncommitted, and no product, launcher, terminal, or navigation file was staged or modified.
+  Evidence commit `65f94b5` is local; its scoped push failed before transfer because GitHub HTTPS
+  credentials are unavailable to this worker.
   Next: after the launcher owner finishes installing and releases the emulator, run this focused
   test twice consecutively, then run the full gates and commit only the test if both runs pass.
 
