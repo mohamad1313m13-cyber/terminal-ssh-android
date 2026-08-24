@@ -68,7 +68,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Settings toggle accessibility: pending commit. Each security switch now exposes one full-width,
+- Settings toggle accessibility: 628a05b (`fix: make settings toggle rows accessible`). Each security switch now exposes one full-width,
   48 dp labeled toggle target with Switch role and checked state instead of limiting activation to
   the trailing control. Focused instrumentation covers bounds, clickability, initial/changed state,
   and persistence. Source, market, loop, whitespace, Android-test compilation, and both-flavor
