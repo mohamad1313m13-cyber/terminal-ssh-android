@@ -62,11 +62,31 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
 - Codex: unclaimed.
+- Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
+  updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
+  reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
+  verification was invalidated by repeated shared-emulator package removal. Resume only with an
+  exclusive emulator window, rerun the focused test, then stage this file only if it passes.
+- Concurrent/unattributed: `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`
+  changed after Codex claimed it; its author must reconcile and verify it before staging.
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Host-editor regression repair is blocked pending an exclusive emulator window. Live API 36
+  hierarchy inspection proved the current entry is the merged, localized New connection Button
+  (`content-desc`) and field labels are children of `EditText` nodes. The draft test compiles. Its
+  first run failed at stale entry discovery (line 52); after app-locale setup it reached the
+  invalid-port assertion (line 76); after editable-parent lookup the next run ended with
+  `Process crashed`; the immediate retry started 0 tests because
+  `app.terminalssh.secure.debug.test/androidx.test.runner.AndroidJUnitRunner` had disappeared after
+  installation. This repeats the concurrent package-removal blocker and prevents a verified commit.
+  The draft remains uncommitted and explicitly attributed above. A separate concurrent edit to
+  `RootNavigationAccessibilityTest.kt` appeared after Codex claimed it and was not staged or
+  modified by this worker. Next safe task: reserve the API 36 emulator, run
+  `HostEditValidationTest` alone twice, then run required gates and commit only the test if green.
 
 - Pending focused emulator audit completed after the initial external interruption: Codex
   reran both market regressions individually on the API 36 `term36` emulator. Both failed
@@ -335,6 +355,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: inspected the API 36 hierarchy and drafted a repair for the stale host-editor
+  entry/field selectors plus English app-locale setup. Compilation passed; execution advanced to
+  invalid-port validation before two consecutive shared-package disruptions (`Process crashed`,
+  then missing instrumentation). Cleared the claim without staging the draft or concurrent files.
 
 - 2026-08-24 Codex: attempted the claimed host-validation/navigation API 36 audit from fresh
   existing artifacts; concurrent full package removal crashed the first test and prevented the
