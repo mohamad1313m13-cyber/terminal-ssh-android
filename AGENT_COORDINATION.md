@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Font-size slider accessibility: pending commit (`fix: name font size control`). The
+- Font-size slider accessibility: d831fe6 (`fix: name font size control`). The
   adjustable control now has the localized “Font size”/“اندازه قلم” accessible name while
   retaining native range semantics and its current numeric value. Focused instrumentation
   asserts the localized node, adjustable range metadata, and a restored 17 sp value; Android-test
