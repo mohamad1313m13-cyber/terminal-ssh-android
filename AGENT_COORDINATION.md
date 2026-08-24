@@ -78,6 +78,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Locale-independent known-host identity normalization (2026-08-24): known-host preference
+  keys now lowercase hostnames with `Locale.ROOT`, preventing Turkish/default-locale changes from
+  turning an already trusted ASCII hostname into a different preference key and an apparent
+  unknown host. JVM regressions prove identical normalization under Turkish and English defaults
+  and preserve IPv6 text with its port separator. The focused market test, source/market/loop
+  gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed. No emulator
+  check applies to this pure deterministic storage-key helper. Claude's launcher files and the
+  unrelated host-editor, navigation, and terminal drafts were not staged or edited. No release is
+  warranted for this bounded fix. Next: complete and visually verify the actively claimed launcher
+  rebuild, then rerun the pending navigation and host-editor instrumentation with an exclusive
+  emulator/package-install window.
+
 - Secret-file zero-read progress repair (2026-08-24): bounded private-key reads now fall back to
   a single-byte read when a provider reports zero bulk-read progress, preventing an infinite loop
   while retaining the one-byte-over-limit rejection. Regression coverage verifies data and EOF

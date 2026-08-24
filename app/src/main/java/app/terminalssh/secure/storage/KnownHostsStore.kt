@@ -3,6 +3,7 @@ package app.terminalssh.secure.storage
 import android.content.Context
 import android.util.Base64
 import app.terminalssh.secure.ssh.KnownHostsVerifier
+import java.util.Locale
 
 class KnownHostsStore(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -36,7 +37,10 @@ class KnownHostsStore(context: Context) {
             get(host, port)
         }
 
-    private fun identity(host: String, port: Int) = "host.${host.lowercase()}:$port"
+    private fun identity(host: String, port: Int) = knownHostIdentity(host, port)
 
     companion object { private const val PREFS = "known_hosts_v1" }
 }
+
+internal fun knownHostIdentity(host: String, port: Int): String =
+    "host.${host.lowercase(Locale.ROOT)}:$port"
