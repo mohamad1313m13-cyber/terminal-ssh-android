@@ -84,6 +84,8 @@ emulator, and visually inspect the launcher result before committing.
   Claude's launcher files, the host-editor draft, and the unattributed terminal edit were not
   staged. No release is warranted for test-only reliability. Next: verify the host-editor draft
   twice in an exclusive Gradle/emulator window, while Claude completes the launcher audit.
+  Verified commit `60fd154` is local; its scoped push failed before transfer because GitHub HTTPS
+  credentials are unavailable to this worker, so a credentialed worker must push `main`.
 
 - Host-editor verification remains blocked by concurrent instrumentation (2026-08-24). The first
   exclusive-window attempt ran the intended `HostEditValidationTest` and failed deterministically
