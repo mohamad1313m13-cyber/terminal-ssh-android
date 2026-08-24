@@ -155,6 +155,7 @@ fun SettingsScreen(viewModel: AppViewModel) {
                 stringResource(R.string.settings_fontsize_value, fontSize),
                 style = MaterialTheme.typography.labelLarge,
             )
+            val fontSizeLabel = stringResource(R.string.settings_fontsize)
             // steps would draw a tick under every one of the 15 sizes, which reads as noise
             // at this width; the value is already stated above the track.
             Slider(
@@ -162,6 +163,7 @@ fun SettingsScreen(viewModel: AppViewModel) {
                 onValueChange = { fontSize = it.toInt() },
                 onValueChangeFinished = { settings.fontSizeSp = fontSize },
                 valueRange = 10f..24f,
+                modifier = Modifier.semantics { contentDescription = fontSizeLabel },
             )
         }
 

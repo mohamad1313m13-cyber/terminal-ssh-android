@@ -65,6 +65,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Font-size slider accessibility: pending commit (`fix: name font size control`). The
+  adjustable control now has the localized “Font size”/“اندازه قلم” accessible name while
+  retaining native range semantics and its current numeric value. Focused instrumentation
+  asserts the localized node, adjustable range metadata, and a restored 17 sp value; Android-test
+  compilation passed, but no emulator was attached, so execution remains pending. Source/market/
+  loop gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed.
+  The shared Kotlin daemon was canceled during concurrent compilation; Gradle's in-process
+  fallback completed successfully. Claude's launcher resources and loop prompt were not staged
+  or modified. No release is warranted for this accessibility-only increment. Next safe task:
+  complete and visually verify the claimed launcher rebuild, then execute this focused slider
+  test alongside the pending session-tab test on the emulator.
+
 - Session-tab accessibility: 228e12d (`fix: expose selected terminal session`). Live
   session tabs now use selectable tab semantics and report which terminal is active. Focused
   instrumentation covers the initial selected state and its transition when a second session
@@ -209,6 +221,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: named the font-size slider for accessibility while preserving adjustable
+  value semantics; focused Android-test compilation and every required static/unit/lint/APK gate
+  passed, with emulator execution pending because no device is attached. Launcher work untouched.
 
 - 2026-08-24 Codex: added selected-state/tab semantics for live terminal sessions and focused
   instrumentation; Android-test compilation and every static/unit/lint/APK gate passed, with

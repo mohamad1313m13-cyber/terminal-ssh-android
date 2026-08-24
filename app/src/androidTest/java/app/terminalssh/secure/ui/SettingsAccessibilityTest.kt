@@ -6,8 +6,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
+import android.view.accessibility.AccessibilityNodeInfo
 import app.terminalssh.secure.R
 import app.terminalssh.secure.TerminalApp
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -49,6 +52,46 @@ class SettingsAccessibilityTest {
         } finally {
             app.settings.themeName = previousTheme
         }
+    }
+
+    @Test
+    fun fontSizeSliderHasLocalizedNameAndAdjustableValue() {
+        val app = instrumentation.targetContext.applicationContext as TerminalApp
+        val previousFontSize = app.settings.fontSizeSp
+
+        try {
+            app.settings.fontSizeSp = 17
+            ActivityScenario.launch(MainActivity::class.java).use {
+                val settingsTab = instrumentation.targetContext.getString(R.string.tab_settings)
+                val fontSizeLabel = instrumentation.targetContext.getString(R.string.settings_fontsize)
+
+                assertTrue(device.wait(Until.hasObject(By.text(settingsTab)), TIMEOUT_MS))
+                device.findObject(By.text(settingsTab)).click()
+                assertTrue(device.wait(Until.hasObject(By.desc(fontSizeLabel)), TIMEOUT_MS))
+
+                val sliderNode = findNodeByDescription(
+                    instrumentation.uiAutomation.rootInActiveWindow,
+                    fontSizeLabel,
+                )
+                assertNotNull("font-size accessibility node was missing", sliderNode)
+                assertNotNull("font-size slider lost adjustable range semantics", sliderNode?.rangeInfo)
+                assertEquals(17f, sliderNode?.rangeInfo?.current ?: Float.NaN, 0.01f)
+            }
+        } finally {
+            app.settings.fontSizeSp = previousFontSize
+        }
+    }
+
+    private fun findNodeByDescription(
+        node: AccessibilityNodeInfo?,
+        description: String,
+    ): AccessibilityNodeInfo? {
+        if (node == null) return null
+        if (node.contentDescription?.toString() == description) return node
+        for (index in 0 until node.childCount) {
+            findNodeByDescription(node.getChild(index), description)?.let { return it }
+        }
+        return null
     }
 
     private companion object {
