@@ -65,6 +65,12 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Multiline paste safety coverage: 35ca138 (`test: cover multiline paste cancellation`).
+  API 36 instrumentation proves a two-line clipboard opens the localized confirmation and
+  Cancel dismisses it while clearing the paste request. Target Android-test compilation,
+  the focused emulator test (1/1), source/market/loop gates, and whitespace check passed.
+  No product code or launcher resource was changed; no release warranted.
+
 - README release-link correction: 8f92f76 (`docs: update current APK download links`). The
   primary CTA and four listed downloads now point
   to `v0.4.1-test3`; all five changed GitHub URLs returned HTTP 200. Source, market, loop,
@@ -105,6 +111,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed bounded emulator coverage for multiline paste confirmation and
+  cancellation after fetching origin; Claude's launcher resources remain untouched.
+- 2026-08-24 Codex: verified the focused API 36 test (1/1), Android-test compilation, all
+  three static gates, and whitespace; committed `35ca138` and cleared the claim.
 
 - 2026-08-24 Codex: claimed the bounded README download-link correction after fetching
   origin and preserving Claude's active launcher-resource work unchanged.
