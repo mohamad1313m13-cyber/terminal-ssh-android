@@ -96,6 +96,7 @@ class SshSession(
             )
         } catch (changed: HostKeyRejected) {
             if (gen != generation.get()) return
+            clearPendingPassword()
             _state.value = SshSessionState.Failed(changed.message ?: "host key rejected", hostKeyChanged = true)
         } catch (t: Throwable) {
             if (gen != generation.get()) return
@@ -104,6 +105,7 @@ class SshSession(
                 Thread.sleep(RECONNECT_DELAY_MS * (attempt + 1))
                 doConnect(gen, attempt + 1)
             } else {
+                clearPendingPassword()
                 _state.value = SshSessionState.Failed(t.message ?: t.javaClass.simpleName)
             }
         }
@@ -189,8 +191,7 @@ class SshSession(
         clearPendingHostKey()
         val open = shell
         shell = null
-        pendingPassword?.fill(0)
-        pendingPassword = null
+        clearPendingPassword()
         _state.value = SshSessionState.Closed
         if (open != null) io.execute { runCatching { open.close() } }
     }
@@ -202,6 +203,11 @@ class SshSession(
 
     private fun clearPendingHostKey() {
         (state.value as? SshSessionState.AwaitingHostKeyApproval)?.key?.fill(0)
+    }
+
+    private fun clearPendingPassword() {
+        pendingPassword?.fill(0)
+        pendingPassword = null
     }
 
     private fun isTransient(t: Throwable): Boolean {
