@@ -49,9 +49,13 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -336,7 +340,16 @@ private fun ToggleRow(label: String, checked: Boolean, onChange: (Boolean) -> Un
                 value = checked,
                 role = Role.Switch,
                 onValueChange = onChange,
-            ),
+            )
+            .clearAndSetSemantics {
+                contentDescription = label
+                role = Role.Switch
+                toggleableState = ToggleableState(checked)
+                onClick {
+                    onChange(!checked)
+                    true
+                }
+            },
     ) {
         Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
         Switch(checked = checked, onCheckedChange = null)

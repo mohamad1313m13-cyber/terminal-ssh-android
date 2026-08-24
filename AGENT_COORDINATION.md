@@ -68,6 +68,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Settings-toggle merged accessibility target repair: pending commit (`fix: merge settings
+  toggle accessibility target`). The first API 36 execution of the existing regression failed
+  because its visible label resolved to a non-clickable child. Each security toggle now exposes
+  one full-width, explicitly named Switch node with checked and click semantics; the regression
+  queries that accessible name and passed on API 36 (1/1), including the 48 dp bound, state
+  transition, and persistence. Source/market/loop gates, whitespace, Android-test compilation,
+  both-flavor unit tests and lint, and both debug APK builds passed. The shared Kotlin daemon was
+  repeatedly canceled, but Gradle's in-process fallback completed successfully. Claude's launcher
+  files and the concurrent `TerminalScreen.kt` edit were not staged or modified. No release is
+  warranted for this bounded accessibility correction. Next: complete and visually verify the
+  claimed launcher rebuild, then reconcile the session-tab semantics edit.
+
 - Hardware-keyboard terminal focus coverage: bc99054 (`test: cover hardware keyboard terminal focus`).
   API 36 instrumentation now covers the visible keyboard action with Android's
   `show_ime_with_hard_keyboard` setting disabled: after Back dismisses the IME, the action

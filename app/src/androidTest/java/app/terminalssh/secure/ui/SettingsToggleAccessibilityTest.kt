@@ -33,9 +33,9 @@ class SettingsToggleAccessibilityTest {
 
                 assertTrue(device.wait(Until.hasObject(By.text(settingsTab)), TIMEOUT_MS))
                 device.findObject(By.text(settingsTab)).click()
-                assertTrue(device.wait(Until.hasObject(By.text(label)), TIMEOUT_MS))
+                assertTrue(device.wait(Until.hasObject(By.desc(label)), TIMEOUT_MS))
 
-                val toggle = device.findObject(By.text(label))
+                val toggle = device.findObject(By.desc(label))
                 val density = context.resources.displayMetrics.density
                 assertTrue("toggle row was not clickable", toggle.isClickable)
                 assertTrue("toggle row did not expose switch state", toggle.isChecked)
@@ -43,7 +43,7 @@ class SettingsToggleAccessibilityTest {
                 assertTrue("toggle row did not include its label and control", toggle.visibleBounds.width() >= 240 * density)
 
                 toggle.click()
-                assertTrue(device.wait(Until.findObject(By.text(label)), TIMEOUT_MS).let { !it.isChecked })
+                assertTrue(device.wait(Until.findObject(By.desc(label)), TIMEOUT_MS).let { !it.isChecked })
                 assertFalse(app.settings.confirmMultilinePaste)
             }
         } finally {
