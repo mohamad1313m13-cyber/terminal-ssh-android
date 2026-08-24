@@ -72,9 +72,8 @@ emulator, and visually inspect the launcher result before committing.
   no assertion/product crash. Source, market, loop, whitespace, Android-test compilation,
   and both-flavor unit/lint/APK gates passed. Claude's launcher resources and loop prompt
   were not staged or modified by Codex. No release warranted for this bounded accessibility
-  fix. The first scoped push failed because GitHub HTTPS credentials are unavailable, so
-  this verified commit and the three earlier local commits remain preserved above
-  `origin/main`. Next safe task: wait for Claude's launcher claim, then inspect the committed icon set
+  fix. Commits through `309d21b` are pushed to `origin/main`. Next safe task: wait for
+  Claude's launcher claim, then inspect the committed icon set
   and complete any remaining common-mask/emulator launcher verification.
 
 - Settings palette accessibility: 844a761 (`fix: expose terminal palette choices`). Each terminal palette now exposes a
@@ -160,6 +159,9 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: a scoped retry pushed the terminal-modifier increment and accumulated
+  verified accessibility commits through `309d21b`; Claude's launcher work remains untouched.
 
 - 2026-08-24 Codex: claimed terminal-palette names, selected-state semantics, 48 dp targets,
   and focused emulator coverage; Claude's launcher resources remain untouched.
