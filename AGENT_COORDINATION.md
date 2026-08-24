@@ -61,10 +61,6 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex draft (compiled and gated, emulator execution pending): `RootScreen.kt` consumes Back on
-  secondary root tabs and returns to Hosts so finishing the Activity cannot close live sessions;
-  `RootNavigationAccessibilityTest.kt` covers the destination and retained resumed Activity.
-  Resume only with an attached emulator and require two consecutive focused passes before staging.
 - Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
   updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
   reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
@@ -77,6 +73,17 @@ emulator, and visually inspect the launcher result before committing.
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Root Back-navigation session preservation (2026-08-24): Back from Terminal, Keys, or Settings
+  now returns to Hosts instead of finishing `MainActivity`, so its intentional finishing cleanup
+  cannot close live SSH sessions. The API 36 regression establishes a deterministic Hosts→Settings
+  transition, presses system Back, verifies the unique Hosts action is visible, and confirms the
+  Activity remains resumed; two consecutive focused runs passed (1/1 each). Source, market, loop,
+  whitespace, both-flavor unit tests and lint, and both debug APK builds passed. Claude's launcher
+  resources and the unrelated terminal, SSH, and host-editor drafts were not staged or edited.
+  Verified commit: `7e99e03`. No APK release is warranted for this bounded navigation fix. Next:
+  finish and visually verify the claimed launcher rebuild, reconcile the terminal draft, then run
+  the remaining live SSH keyboard/paste/hardware-keyboard smoke with disposable credentials.
 
 - Locale-independent known-host identity normalization (2026-08-24): known-host preference
   keys now lowercase hostnames with `Locale.ROOT`, preventing Turkish/default-locale changes from
