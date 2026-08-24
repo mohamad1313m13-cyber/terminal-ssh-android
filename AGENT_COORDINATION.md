@@ -75,6 +75,16 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Host-editor verification was invalidated by concurrent package removal again (2026-08-24).
+  Codex fetched `origin`, booted the API 36 `term36` AVD, confirmed no other instrumentation
+  process was active, and started only `HostEditValidationTest`. Logcat then recorded
+  `deletePackageX` force-stopping and removing `app.terminalssh.secure.debug` at 11:59:46.666,
+  roughly 0.4 seconds after the test started; Android consequently reported `Process crashed`.
+  This is external runner interference, not a test assertion result. The draft remains unverified
+  and uncommitted, and no product, launcher, terminal, or navigation file was staged or modified.
+  Next: after the launcher owner finishes installing and releases the emulator, run this focused
+  test twice consecutively, then run the full gates and commit only the test if both runs pass.
+
 - Bottom-navigation regression repair (2026-08-24): live API 36 hierarchy inspection confirmed
   the existing navigation-item ancestor correctly exposes selected state. The regression now
   disambiguates the bottom Hosts label from the same-named page heading and correlates that label
