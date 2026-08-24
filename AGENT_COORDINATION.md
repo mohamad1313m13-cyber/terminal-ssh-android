@@ -61,11 +61,10 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: back-navigation session-preservation repair. Claimed files:
-  `app/src/main/java/app/terminalssh/secure/ui/RootScreen.kt` and
-  `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`.
-  Acceptance: Back from a secondary root tab returns to Hosts without finishing the Activity;
-  Back from Hosts retains normal system behavior.
+- Codex draft (compiled and gated, emulator execution pending): `RootScreen.kt` consumes Back on
+  secondary root tabs and returns to Hosts so finishing the Activity cannot close live sessions;
+  `RootNavigationAccessibilityTest.kt` covers the destination and retained resumed Activity.
+  Resume only with an attached emulator and require two consecutive focused passes before staging.
 - Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
   updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
   reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
@@ -78,6 +77,40 @@ emulator, and visually inspect the launcher result before committing.
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Secret-file zero-read progress repair (2026-08-24): bounded private-key reads now fall back to
+  a single-byte read when a provider reports zero bulk-read progress, preventing an infinite loop
+  while retaining the one-byte-over-limit rejection. Regression coverage verifies data and EOF
+  after a zero read. Focused market tests, source/market/loop gates, whitespace, both-flavor unit
+  tests and lint, and both debug APK builds passed. No emulator check is applicable to this pure
+  stream utility. Launcher, navigation, host-editor, and terminal drafts were not staged or edited.
+  Verified commit `1157036` is pushed to `origin/main`; a live `git ls-remote` check first confirmed
+  the remote was still at its parent `ef09d87`, and the push fast-forwarded only that commit.
+  GitHub CLI is unavailable in this environment, so its Actions run could not be queried here.
+  Next: complete and visually verify the actively claimed launcher rebuild, then rerun the pending
+  navigation and host-editor instrumentation with an exclusive emulator/package-install window.
+
+- Back-navigation verification was invalidated by concurrent package removal (2026-08-24).
+  Codex fetched `origin`, confirmed local and remote `main` agree at `ef09d87`, and ran only
+  `RootNavigationAccessibilityTest#backFromSecondaryTabReturnsToHostsWithoutFinishingActivity`
+  on the attached API 36 `term36` emulator. The intended test started at 12:48:07.530. Device
+  logcat then recorded another install/instrumentation cycle, followed by `deletePackageX` at
+  12:48:21.284 and the test process being killed at 12:48:21.450. Android consequently reported
+  `Process crashed`; this is not a product assertion result. The draft remains unverified and
+  uncommitted, and Codex did not touch or stage the launcher, terminal, or host-editor drafts.
+  Next: reserve the shared Gradle/package installer and emulator exclusively, rerun this single
+  method twice consecutively, then run the required gates and commit only the two navigation files.
+
+- Back-navigation session-preservation draft (2026-08-24): inspection found that Back from
+  Terminal, Keys, or Settings finished `MainActivity`, whose intentional finishing cleanup closes
+  every live session. The draft now returns secondary tabs to Hosts and adds a regression that
+  asserts both the selected destination and resumed Activity state. Android-test compilation,
+  source/market/loop security gates, whitespace, both-flavor unit tests and lint, and both debug
+  APK builds passed; Kotlin daemon cancellation recovered through the in-process fallback. No
+  emulator was attached, so the focused test remains unexecuted and nothing was committed. Git
+  fetch remains blocked by read-only `.git/FETCH_HEAD`, and pushing the two existing verified
+  commits remains blocked by missing GitHub HTTPS credentials. Next: attach an API 36 emulator,
+  run `RootNavigationAccessibilityTest` twice, then commit this draft only if both passes succeed.
 
 - Repository synchronization completed (2026-08-24): the two previously verified local commits,
   unsupported deep-link removal `ff72b59` and its handoff `5886af8`, were pushed successfully;
@@ -488,6 +521,17 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed repository synchronization only, verified the live remote head, and
+  pushed already-gated commit `1157036` as a one-commit fast-forward. No shared product/test/icon
+  draft was staged or edited; no emulator was attached, so navigation verification remains pending.
+
+- 2026-08-24 Codex: fetched origin and resumed the attributed Back-navigation regression on API 36;
+  a concurrent `deletePackageX` removed the debug packages during execution, so the run is invalid.
+  Cleared the claim without staging or committing any shared draft.
+
+- 2026-08-24 Codex: added and fully gated an attributed Back-navigation/session-preservation
+  draft, but left it uncommitted because no emulator was attached for focused execution.
 
 - 2026-08-24 Codex: claimed repository synchronization only, fetched origin, and pushed the two
   already-verified commits through `5886af8`; cleared the claim without touching concurrent product,
