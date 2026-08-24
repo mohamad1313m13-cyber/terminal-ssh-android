@@ -161,6 +161,25 @@ class TerminalKeyboardTest {
         }
     }
 
+    @Test
+    fun symbolicToolbarKeysHaveReadableActionNames() {
+        app.sessions.add(idleSession(id = "toolbar-semantics", title = "Toolbar test"))
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            val interrupt = instrumentation.targetContext.getString(R.string.terminal_key_interrupt)
+            val endOfInput = instrumentation.targetContext.getString(R.string.terminal_key_eof)
+
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+
+            // Reveal the symbolic actions in the horizontally scrolling toolbar.
+            repeat(3) { device.swipe(900, 2100, 200, 2100, 20) }
+            assertTrue(device.wait(Until.hasObject(By.desc(interrupt)), UI_TIMEOUT_MS))
+            assertTrue(device.wait(Until.hasObject(By.desc(endOfInput)), UI_TIMEOUT_MS))
+        }
+    }
+
     private fun dismissAndReopenKeyboard(
         scenario: ActivityScenario<MainActivity>,
         keyboardAction: String,

@@ -314,13 +314,19 @@ private fun KeyToolbar(
             ToolKey("Tab") { session.send(byteArrayOf(0x09)) }
             ToolKey("Ctrl", active = ctrl, toggle = true) { ctrl = !ctrl; alt = false }
             ToolKey("Alt", active = alt, toggle = true) { alt = !alt; ctrl = false }
-            ToolKey("^C") { session.send(byteArrayOf(0x03)); ctrl = false }
-            ToolKey("^D") { session.send(byteArrayOf(0x04)); ctrl = false }
-            ToolKey("^L") { session.send(byteArrayOf(0x0C)); ctrl = false }
-            ToolKey("↑") { session.send("\u001B[A") }
-            ToolKey("↓") { session.send("\u001B[B") }
-            ToolKey("←") { session.send("\u001B[D") }
-            ToolKey("→") { session.send("\u001B[C") }
+            ToolKey("^C", contentDescription = stringResource(R.string.terminal_key_interrupt)) {
+                session.send(byteArrayOf(0x03)); ctrl = false
+            }
+            ToolKey("^D", contentDescription = stringResource(R.string.terminal_key_eof)) {
+                session.send(byteArrayOf(0x04)); ctrl = false
+            }
+            ToolKey("^L", contentDescription = stringResource(R.string.terminal_key_clear)) {
+                session.send(byteArrayOf(0x0C)); ctrl = false
+            }
+            ToolKey("↑", contentDescription = stringResource(R.string.terminal_key_up)) { session.send("\u001B[A") }
+            ToolKey("↓", contentDescription = stringResource(R.string.terminal_key_down)) { session.send("\u001B[B") }
+            ToolKey("←", contentDescription = stringResource(R.string.terminal_key_left)) { session.send("\u001B[D") }
+            ToolKey("→", contentDescription = stringResource(R.string.terminal_key_right)) { session.send("\u001B[C") }
             ToolKey("|") { sendText("|") }
             ToolKey("/") { sendText("/") }
             ToolKey("-") { sendText("-") }

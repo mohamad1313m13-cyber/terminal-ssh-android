@@ -74,6 +74,13 @@
     <string name="paste_confirm_body">این متن مستقیماً در ترمینال اجرا می‌شود.</string>
     <string name="paste">چسباندن</string>
     <string name="show_keyboard">نمایش صفحه‌کلید</string>
+    <string name="terminal_key_interrupt">وقفه، Control+C</string>
+    <string name="terminal_key_eof">پایان ورودی، Control+D</string>
+    <string name="terminal_key_clear">پاک‌کردن صفحه، Control+L</string>
+    <string name="terminal_key_up">پیکان بالا</string>
+    <string name="terminal_key_down">پیکان پایین</string>
+    <string name="terminal_key_left">پیکان چپ</string>
+    <string name="terminal_key_right">پیکان راست</string>
     <string name="close_session">بستن سشن %1$s</string>
 
     <string name="notif_channel">سشن‌های فعال</string>

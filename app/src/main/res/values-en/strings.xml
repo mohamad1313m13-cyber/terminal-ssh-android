@@ -74,6 +74,13 @@
     <string name="paste_confirm_body">This text runs directly in the terminal.</string>
     <string name="paste">Paste</string>
     <string name="show_keyboard">Show keyboard</string>
+    <string name="terminal_key_interrupt">Interrupt, Control+C</string>
+    <string name="terminal_key_eof">End of input, Control+D</string>
+    <string name="terminal_key_clear">Clear screen, Control+L</string>
+    <string name="terminal_key_up">Up arrow</string>
+    <string name="terminal_key_down">Down arrow</string>
+    <string name="terminal_key_left">Left arrow</string>
+    <string name="terminal_key_right">Right arrow</string>
     <string name="close_session">Close session %1$s</string>
 
     <string name="notif_channel">Active sessions</string>
