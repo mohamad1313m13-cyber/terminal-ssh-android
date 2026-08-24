@@ -56,6 +56,8 @@ fun HostEditSheet(
     var tags by remember { mutableStateOf(initial?.tags?.joinToString(", ") ?: "") }
     var error by remember { mutableStateOf<String?>(null) }
     var confirmDelete by remember { mutableStateOf(false) }
+    val requiredFieldsError = stringResource(R.string.err_host_required)
+    val portRangeError = stringResource(R.string.err_port_range)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -102,8 +104,8 @@ fun HostEditSheet(
                 onClick = {
                     val portNumber = port.toIntOrNull() ?: 22
                     when {
-                        host.isBlank() || username.isBlank() -> error = "آدرس سرور و نام کاربری لازم است"
-                        portNumber !in 1..65535 -> error = "پورت باید بین ۱ تا ۶۵۵۳۵ باشد"
+                        host.isBlank() || username.isBlank() -> error = requiredFieldsError
+                        portNumber !in 1..65535 -> error = portRangeError
                         else -> {
                             val profile = HostProfile(
                                 id = initial?.id ?: UUID.randomUUID().toString(),

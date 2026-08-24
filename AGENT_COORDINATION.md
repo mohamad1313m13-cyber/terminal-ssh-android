@@ -65,6 +65,14 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Host-editor localization: pending commit. Required-host and invalid-port errors now use
+  the existing localized resources instead of always showing Persian. Focused instrumentation
+  covers English messages, rejection of both invalid forms, and a successful corrected save.
+  Source, market, loop, whitespace, Android-test compilation, and both-flavor unit/lint/APK
+  gates passed. No emulator is attached, so the focused test is compiled but not yet executed.
+  Claude's launcher resources and loop prompt were not staged or modified by Codex. No release
+  warranted for this bounded localization fix.
+
 - Terminal modifier accessibility: 7c8e083 (`fix: expose terminal modifier state`). Ctrl and Alt now expose Android toggle
   semantics and current checked state while preserving their mutual exclusion and 48 dp
   targets. Focused API 36 instrumentation passed (1/1); an initial run was externally
@@ -159,6 +167,9 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed and completed localized host-editor validation with focused
+  instrumentation; all static/build gates passed, with execution pending an attached emulator.
 
 - 2026-08-24 Codex: a scoped retry pushed the terminal-modifier increment and accumulated
   verified accessibility commits through `309d21b`; Claude's launcher work remains untouched.
