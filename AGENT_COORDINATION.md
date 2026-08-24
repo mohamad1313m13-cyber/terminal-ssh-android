@@ -68,6 +68,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Hardware-keyboard terminal focus coverage: bc99054 (`test: cover hardware keyboard terminal focus`).
+  API 36 instrumentation now covers the visible keyboard action with Android's
+  `show_ime_with_hard_keyboard` setting disabled: after Back dismisses the IME, the action
+  restores focus to termlib's editor so physical-key input has a valid target, and enabling
+  the setting lets the same action reopen the soft IME. The first execution exposed an
+  activity-thread timing race in the assertion; after synchronizing its diagnostic read,
+  two consecutive focused runs passed (1/1 each). Android-test compilation, source/market/loop
+  gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed.
+  Claude's launcher resources and the unattributed `TerminalScreen.kt` edit were not staged
+  or modified. No release is warranted for test-only coverage. Next: complete and visually
+  verify the claimed launcher rebuild, then reconcile the session-tab semantics edit.
+
 - Bottom-navigation accessible-name cleanup: bd02539 (`fix: avoid duplicate navigation labels`).
   Decorative tab icons no longer repeat the localized visible label, while a focused
   instrumentation regression checks all four labels and verifies selected state moves from
