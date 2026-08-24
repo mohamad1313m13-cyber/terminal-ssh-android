@@ -74,6 +74,20 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Terminal-failure password cleanup completed (2026-08-24): `SshSession` now zeroes and
+  releases its pending quick-connect password when host-key rejection or an exhausted or
+  non-retryable connection error reaches `Failed`; first-use approval and live reconnect paths
+  retain the secret they still need. The focused API 36 regression passed twice consecutively in
+  the prior verification window. A fresh attempt in this window was externally invalidated when
+  the shared emulator disappeared during execution (`expected 1 tests, received 0`), so it is not
+  counted as an assertion result. Source, market, and loop security gates, whitespace, both-flavor
+  unit tests and lint, and both debug APK builds pass. Only the claimed source and regression test
+  are included in the product commit; launcher, host-editor, terminal, and coordination work from
+  other workers remain untouched. Verified commit: `63ff04d`. No APK release is warranted for this
+  bounded security hardening. Next: push verified local commits from a credentialed worker, finish
+  and visually verify the claimed launcher rebuild, then rerun the host-editor draft with an
+  exclusive emulator.
+
 - Root Back-navigation session preservation (2026-08-24): Back from Terminal, Keys, or Settings
   now returns to Hosts instead of finishing `MainActivity`, so its intentional finishing cleanup
   cannot close live SSH sessions. The API 36 regression establishes a deterministic Hosts→Settings
