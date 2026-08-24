@@ -65,6 +65,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Pending accessibility execution audit: the API 36 emulator executed the two previously
+  compile-only regressions, and both failed (0/2). The font-size node with the localized
+  description had no `rangeInfo` (`SettingsAccessibilityTest.kt:77`), and the text node for
+  the initially active session did not expose selected state (`TerminalKeyboardTest.kt:125`).
+  This verification-only iteration changed no product/test/launcher resources and therefore
+  did not run the full release gates or publish a release. Evidence is in the connected market
+  Android-test report under `app/build/reports/androidTests/connected/debug/flavors/market/`.
+  Next: after the launcher claim completes, repair these semantics or adjust the instrumentation
+  to query the merged selectable parent only if a UIAutomator tree proves the parent already
+  exposes the correct state; rerun both focused tests before claiming either fix verified.
+
 - Font-size slider accessibility: d831fe6 (`fix: name font size control`). The
   adjustable control now has the localized “Font size”/“اندازه قلم” accessible name while
   retaining native range semantics and its current numeric value. Focused instrumentation
@@ -222,6 +233,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: started the existing API 36 AVD and executed the pending font-size and
+  session-selection accessibility tests; both failed (0/2) at their semantic-state assertions.
+  Recorded the exact evidence without touching Claude's launcher resources or changing product code.
 
 - 2026-08-24 Codex: named the font-size slider for accessibility while preserving adjustable
   value semantics; focused Android-test compilation and every required static/unit/lint/APK gate
