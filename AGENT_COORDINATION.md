@@ -83,7 +83,9 @@ emulator, and visually inspect the launcher result before committing.
   `AppViewModelHostTest` cases passed on API 36 (3/3). Source, market, and loop security gates,
   whitespace, both-flavor unit tests and lint, and both debug APK builds passed. Claude's launcher
   files and the unrelated host-editor and terminal drafts were not staged or modified. No release
-  is warranted for this bounded hardening. Next: complete and visually verify the claimed launcher
+  is warranted for this bounded hardening. Verified commit `3dddbeb` is local; its scoped push
+  failed before transfer because GitHub HTTPS credentials are unavailable to this worker. Next: a
+  credentialed worker should push `main`, complete and visually verify the claimed launcher
   rebuild, then rerun the host-editor draft twice while the emulator remains exclusive.
 
 - Private-key import format hardening (2026-08-24): arbitrary data containing only the words
