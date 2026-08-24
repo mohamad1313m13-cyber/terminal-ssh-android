@@ -68,7 +68,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Home new-connection accessibility: pending commit (`fix: expose new connection button`).
+- Home new-connection accessibility: 4f8c795 (`fix: expose new connection button`).
   The hero action now exposes one localized Button node and guarantees a minimum 48 dp touch
   target; focused instrumentation covers its name, role, bounds, and opening the host editor.
   Android-test compilation, source/market/loop gates, whitespace, both-flavor unit tests and
