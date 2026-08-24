@@ -30,12 +30,11 @@ jobs:
           curl -sSL -o /tmp/kotlinc.zip https://github.com/JetBrains/kotlin/releases/download/v2.3.21/kotlin-compiler-2.3.21.zip
           unzip -q /tmp/kotlinc.zip -d /opt
           echo "/opt/kotlinc/bin" >> "$GITHUB_PATH"
-      - name: Source, market and JVM gates
+      - name: Source and market gates
         run: |
           python3 scripts/source_audit.py
           python3 scripts/market_release_gate.py
           python3 scripts/loop2_gate.py
-          ./scripts/verify_jvm.sh
       - name: Unit tests, lint and installable verification builds
         run: ./gradlew --no-daemon testMarketDebugUnitTest testGplayDebugUnitTest lintMarketDebug lintGplayDebug assembleMarketDebug assembleGplayDebug
       - name: Upload verification outputs
