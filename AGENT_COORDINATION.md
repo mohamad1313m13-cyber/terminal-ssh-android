@@ -57,7 +57,8 @@ emulator, and visually inspect the launcher result before committing.
 ## Active work
 
 - Claude: unclaimed
-- Codex: unclaimed
+- Codex: terminal soft-keyboard reopen and adjacent terminal toolbar/focus/accessibility polish
+  (`TerminalScreen.kt`, terminal strings, focused UI/instrumentation tests, and this handoff)
 
 ## Latest verified handoff
 
@@ -72,3 +73,6 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed the top-priority terminal keyboard-reopen scope after confirming
+  a clean worktree; `git fetch origin` is currently blocked by read-only `.git/FETCH_HEAD`.

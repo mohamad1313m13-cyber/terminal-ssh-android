@@ -62,6 +62,8 @@
     <string name="paste_confirm_title">Paste %1$d lines?</string>
     <string name="paste_confirm_body">This text runs directly in the terminal.</string>
     <string name="paste">Paste</string>
+    <string name="show_keyboard">Show keyboard</string>
+    <string name="close_session">Close session</string>
 
     <string name="notif_channel">Active sessions</string>
     <string name="notif_title">Terminal SSH</string>

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,7 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -83,6 +88,14 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
     }
 
     var snippetsOpen by remember(active.id) { mutableStateOf(false) }
+    val terminalFocusRequester = remember(active.id) { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val showKeyboard = {
+        terminalFocusRequester.requestFocus()
+        keyboardController?.show()
+        Unit
+    }
 
     Column(Modifier.fillMaxSize().imePadding()) {
         SessionTabs(
@@ -97,10 +110,15 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
                 terminalEmulator = active.emulator,
                 keyboardEnabled = true,
                 showSoftKeyboard = true,
+                focusRequester = terminalFocusRequester,
                 onPasteRequest = { active.requestPaste() },
             )
         }
-        KeyToolbar(active, onSnippets = { snippetsOpen = true })
+        KeyToolbar(
+            active,
+            onShowKeyboard = showKeyboard,
+            onSnippets = { snippetsOpen = true },
+        )
         PasteAndHostKeyDialogs(viewModel, active)
         if (snippetsOpen) {
             val snippets by viewModel.snippets.collectAsStateWithLifecycle()
@@ -125,6 +143,7 @@ private fun SessionTabs(
     onSelect: (String) -> Unit,
     onClose: (String) -> Unit,
 ) {
+    val closeDescription = stringResource(R.string.close_session)
     Row(
         Modifier
             .fillMaxWidth()
@@ -152,9 +171,12 @@ private fun SessionTabs(
                 Text(session.title, style = MaterialTheme.typography.labelLarge)
                 Icon(
                     Icons.Outlined.Close,
-                    contentDescription = null,
+                    contentDescription = closeDescription,
                     tint = TextSecondary,
-                    modifier = Modifier.size(26.dp).clickable { onClose(session.id) }.padding(6.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable { onClose(session.id) }
+                        .padding(12.dp),
                 )
             }
         }
@@ -208,7 +230,11 @@ private fun StatusBar(session: SshSession) {
  * Ctrl and Alt latch for exactly one following keystroke, like a real terminal.
  */
 @Composable
-private fun KeyToolbar(session: SshSession, onSnippets: () -> Unit) {
+private fun KeyToolbar(
+    session: SshSession,
+    onShowKeyboard: () -> Unit,
+    onSnippets: () -> Unit,
+) {
     var ctrl by remember { mutableStateOf(false) }
     var alt by remember { mutableStateOf(false) }
 
@@ -231,35 +257,50 @@ private fun KeyToolbar(session: SshSession, onSnippets: () -> Unit) {
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 10.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        ToolKey(stringResource(R.string.snippets_short)) { onSnippets() }
-        ToolKey("Esc") { session.send(byteArrayOf(0x1B)) }
-        ToolKey("Tab") { session.send(byteArrayOf(0x09)) }
-        ToolKey("Ctrl", active = ctrl) { ctrl = !ctrl; alt = false }
-        ToolKey("Alt", active = alt) { alt = !alt; ctrl = false }
-        ToolKey("^C") { session.send(byteArrayOf(0x03)); ctrl = false }
-        ToolKey("^D") { session.send(byteArrayOf(0x04)); ctrl = false }
-        ToolKey("^L") { session.send(byteArrayOf(0x0C)); ctrl = false }
-        ToolKey("↑") { session.send("\u001B[A") }
-        ToolKey("↓") { session.send("\u001B[B") }
-        ToolKey("←") { session.send("\u001B[D") }
-        ToolKey("→") { session.send("\u001B[C") }
-        ToolKey("|") { sendText("|") }
-        ToolKey("/") { sendText("/") }
-        ToolKey("-") { sendText("-") }
-        ToolKey("~") { sendText("~") }
-        ToolKey("Home") { session.send("\u001B[H") }
-        ToolKey("End") { session.send("\u001B[F") }
-        ToolKey("PgUp") { session.send("\u001B[5~") }
-        ToolKey("PgDn") { session.send("\u001B[6~") }
+        ToolKey(
+            label = "⌨",
+            contentDescription = stringResource(R.string.show_keyboard),
+            onClick = onShowKeyboard,
+        )
+        Row(
+            Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            ToolKey(stringResource(R.string.snippets_short)) { onSnippets() }
+            ToolKey("Esc") { session.send(byteArrayOf(0x1B)) }
+            ToolKey("Tab") { session.send(byteArrayOf(0x09)) }
+            ToolKey("Ctrl", active = ctrl) { ctrl = !ctrl; alt = false }
+            ToolKey("Alt", active = alt) { alt = !alt; ctrl = false }
+            ToolKey("^C") { session.send(byteArrayOf(0x03)); ctrl = false }
+            ToolKey("^D") { session.send(byteArrayOf(0x04)); ctrl = false }
+            ToolKey("^L") { session.send(byteArrayOf(0x0C)); ctrl = false }
+            ToolKey("↑") { session.send("\u001B[A") }
+            ToolKey("↓") { session.send("\u001B[B") }
+            ToolKey("←") { session.send("\u001B[D") }
+            ToolKey("→") { session.send("\u001B[C") }
+            ToolKey("|") { sendText("|") }
+            ToolKey("/") { sendText("/") }
+            ToolKey("-") { sendText("-") }
+            ToolKey("~") { sendText("~") }
+            ToolKey("Home") { session.send("\u001B[H") }
+            ToolKey("End") { session.send("\u001B[F") }
+            ToolKey("PgUp") { session.send("\u001B[5~") }
+            ToolKey("PgDn") { session.send("\u001B[6~") }
+        }
     }
 }
 
 @Composable
-private fun ToolKey(label: String, active: Boolean = false, onClick: () -> Unit) {
+private fun ToolKey(
+    label: String,
+    active: Boolean = false,
+    contentDescription: String? = null,
+    onClick: () -> Unit,
+) {
     Text(
         label,
         style = MaterialTheme.typography.labelLarge,
@@ -267,7 +308,13 @@ private fun ToolKey(label: String, active: Boolean = false, onClick: () -> Unit)
         modifier = Modifier
             .clip(RoundedCornerShape(9.dp))
             .background(if (active) Turquoise else MaterialTheme.colorScheme.surfaceVariant)
+            .then(
+                if (contentDescription != null) Modifier.semantics {
+                    this.contentDescription = contentDescription
+                } else Modifier,
+            )
             .clickable(onClick = onClick)
+            .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
             .padding(horizontal = 13.dp, vertical = 9.dp),
     )
 }
