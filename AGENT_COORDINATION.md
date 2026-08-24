@@ -84,7 +84,9 @@ emulator, and visually inspect the launcher result before committing.
   APK builds passed. The shared Kotlin daemon was canceled during compilation, but Gradle's
   in-process fallback completed successfully. Claude's launcher files and the unrelated host and
   terminal drafts were not staged or modified. No APK release is warranted for this bounded
-  validation fix. Next: complete and visually verify the claimed launcher rebuild, then rerun the
+  validation fix. Verified commit `00680a3` is local; its scoped push failed before transfer
+  because GitHub HTTPS credentials are unavailable to this worker. Next: a credentialed worker
+  should push `main`, complete and visually verify the claimed launcher rebuild, then rerun the
   host-editor instrumentation draft twice in an exclusive emulator window.
 
 - Host-editor verification was invalidated by concurrent package removal again (2026-08-24).
