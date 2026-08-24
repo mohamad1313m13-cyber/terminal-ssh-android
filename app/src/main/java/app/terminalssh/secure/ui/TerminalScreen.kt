@@ -30,7 +30,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +54,7 @@ import app.terminalssh.secure.ui.theme.Stroke
 import app.terminalssh.secure.ui.theme.TextSecondary
 import app.terminalssh.secure.ui.theme.Turquoise
 import app.terminalssh.secure.vm.AppViewModel
+import kotlinx.coroutines.launch
 import org.connectbot.terminal.Terminal
 
 @Composable
@@ -90,10 +93,16 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
     var snippetsOpen by remember(active.id) { mutableStateOf(false) }
     val terminalFocusRequester = remember(active.id) { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val keyboardScope = rememberCoroutineScope()
 
     val showKeyboard = {
-        terminalFocusRequester.requestFocus()
-        keyboardController?.show()
+        keyboardScope.launch {
+            terminalFocusRequester.requestFocus()
+            // Terminal is a custom editor. Let focus publish its input connection before
+            // asking the IME to attach, otherwise rapid dismiss/reopen taps can be ignored.
+            withFrameNanos { }
+            keyboardController?.show()
+        }
         Unit
     }
 

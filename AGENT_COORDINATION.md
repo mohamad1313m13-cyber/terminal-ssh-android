@@ -57,7 +57,9 @@ emulator, and visually inspect the launcher result before committing.
 ## Active work
 
 - Claude: unclaimed
-- Codex: unclaimed
+- Codex: live-session terminal interaction audit and any narrowly required fix; files:
+  `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`, terminal-focused tests,
+  and this handoff
 
 ## Latest verified handoff
 
@@ -85,3 +87,5 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: published `v0.4.1-test2`; GitHub Actions run `32687774746`
   completed green for verify, optional signed-market, and publish jobs. Nine debug APK assets
   are public, including `TerminalSSH-v0.4.1-test2-market-universal-debug.apk`.
+- 2026-08-24 Codex: claimed live-session keyboard reopen and adjacent terminal interaction
+  audit after a clean worktree and successful `git fetch origin`; GitHub CLI is unavailable.
