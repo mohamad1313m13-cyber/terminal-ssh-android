@@ -61,7 +61,9 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: unclaimed
+- Codex: terminal IME resilience audit after rotation and repeated Back/reopen cycles. Files claimed:
+  `app/src/androidTest/java/app/terminalssh/secure/ui/TerminalKeyboardTest.kt` and, only if the
+  audit exposes a defect, `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`.
 
 ## Latest verified handoff
 
@@ -85,6 +87,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed bounded terminal IME rotation/repeated-reopen instrumentation
+  after a clean tracked worktree and successful `git fetch origin`; launcher resources remain
+  exclusively claimed by Claude.
 
 - 2026-08-24 Claude: claimed the launcher icon rebuild from `/root/file_00000000143882438f4989f08e461e03.jpg`
   after a clean tracked worktree, successful `git fetch origin`, and local main level with origin.

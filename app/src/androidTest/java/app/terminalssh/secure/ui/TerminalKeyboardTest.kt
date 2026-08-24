@@ -37,6 +37,7 @@ class TerminalKeyboardTest {
 
     @After
     fun tearDown() {
+        device.setOrientationNatural()
         app.sessions.closeAll()
         writeSecureSetting("show_ime_with_hard_keyboard", previousHardwareKeyboardSetting)
     }
@@ -55,15 +56,32 @@ class TerminalKeyboardTest {
             device.findObject(By.text(terminalTab)).click()
             assertTrue(device.wait(Until.hasObject(By.desc(keyboardAction)), UI_TIMEOUT_MS))
 
-            // Terminal requests the keyboard on entry. Back dismisses it while leaving the
-            // session and its always-visible recovery action in place.
-            device.waitForIdle()
+            // Exercise more than the first recovery. Input-method races commonly appear only
+            // after Android reuses an existing input connection.
+            repeat(2) {
+                dismissAndReopenKeyboard(scenario, keyboardAction)
+            }
+
+            // MainActivity handles orientation changes in place. Ensure the embedded terminal
+            // editor remains discoverable after its AndroidView is laid out at a new size.
             device.pressBack()
             assertTrue(waitForIme(scenario, visible = false))
-
+            device.setOrientationLeft()
+            assertTrue(device.wait(Until.hasObject(By.desc(keyboardAction)), UI_TIMEOUT_MS))
             device.findObject(By.desc(keyboardAction)).click()
             assertTrue(waitForIme(scenario, visible = true))
         }
+    }
+
+    private fun dismissAndReopenKeyboard(
+        scenario: ActivityScenario<MainActivity>,
+        keyboardAction: String,
+    ) {
+        device.waitForIdle()
+        device.pressBack()
+        assertTrue(waitForIme(scenario, visible = false))
+        device.findObject(By.desc(keyboardAction)).click()
+        assertTrue(waitForIme(scenario, visible = true))
     }
 
     private fun idleSession(): SshSession = SshSession(
