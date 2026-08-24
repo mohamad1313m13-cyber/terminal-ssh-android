@@ -75,6 +75,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Host-editor verification was externally invalidated again (2026-08-24). After a successful
+  origin fetch, Codex booted the existing API 36 `term36` AVD and ran only
+  `HostEditValidationTest`. The first execution reached its entry assertion while an Android
+  System UI ANR dialog covered the app; the captured hierarchy contained only the Persian
+  “System UI isn't responding” dialog. After choosing Wait and confirming boot completion, the
+  focused rerun started the intended test at 12:22:51.754. Logcat then recorded `deletePackageX`
+  force-stopping and removing `app.terminalssh.secure.debug` at 12:22:52.114, killing the active
+  instrumentation process 0.36 seconds after test start. No assertion result from the draft is
+  valid, and no product, test, terminal, or launcher file was staged or modified by this attempt.
+  Next: reserve the emulator and external package installer exclusively, rerun this focused test
+  twice, then run the required gates and commit only the test if both executions pass.
+
 - Mutable password lifetime hardening (2026-08-24): `saveHost` now clears its caller-owned
   `CharArray` on successful and failed saves, and `openSession` clears its caller-owned password
   after encoding on every exit path. The existing successful-save wipe assertion now passes, and
@@ -438,6 +450,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed the preserved host-editor regression after fetching origin. The
+  initial focused run was obscured by a System UI ANR; after recovery, an external
+  `deletePackageX` removed both debug packages 0.36 seconds into the intended rerun. Cleared the
+  claim without staging the draft or touching Claude's launcher and unattributed terminal work.
 
 - 2026-08-24 Codex: the intended host-validation run reached a deterministic invalid-port
   assertion; after adding field-update synchronization, its rerun was displaced by a concurrent
