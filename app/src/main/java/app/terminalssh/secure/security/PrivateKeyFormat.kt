@@ -6,14 +6,20 @@ package app.terminalssh.secure.security
  */
 object PrivateKeyFormat {
     fun detect(bytes: ByteArray): String {
-        require(containsAscii(bytes, "PRIVATE KEY")) { "not an OpenSSH/PEM private key" }
         return when {
-            containsAscii(bytes, "OPENSSH PRIVATE KEY") -> "openssh"
-            containsAscii(bytes, "RSA PRIVATE KEY") -> "rsa"
-            containsAscii(bytes, "EC PRIVATE KEY") -> "ecdsa"
-            else -> "pem"
+            containsAscii(bytes, "-----BEGIN OPENSSH PRIVATE KEY-----") -> "openssh"
+            containsAscii(bytes, "-----BEGIN RSA PRIVATE KEY-----") -> "rsa"
+            containsAscii(bytes, "-----BEGIN EC PRIVATE KEY-----") -> "ecdsa"
+            PEM_HEADERS.any { containsAscii(bytes, it) } -> "pem"
+            else -> throw IllegalArgumentException("not an OpenSSH/PEM private key")
         }
     }
+
+    private val PEM_HEADERS = arrayOf(
+        "-----BEGIN PRIVATE KEY-----",
+        "-----BEGIN ENCRYPTED PRIVATE KEY-----",
+        "-----BEGIN DSA PRIVATE KEY-----",
+    )
 
     internal fun containsAscii(bytes: ByteArray, needle: String): Boolean {
         if (needle.isEmpty()) return true

@@ -75,6 +75,18 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Private-key import format hardening (2026-08-24): arbitrary data containing only the words
+  `PRIVATE KEY` is no longer accepted by the pre-import format gate. Detection now requires a
+  complete supported OpenSSH, RSA, EC, PKCS#8, encrypted PKCS#8, or DSA PEM begin marker while
+  preserving the existing algorithm labels. Regression coverage includes every supported marker,
+  misleading prose, and truncated delimiters. The focused market unit test passed; source,
+  market, and loop security gates, whitespace, both-flavor unit tests and lint, and both debug
+  APK builds passed. The shared Kotlin daemon was canceled during compilation, but Gradle's
+  in-process fallback completed successfully. Claude's launcher files and the unrelated host and
+  terminal drafts were not staged or modified. No APK release is warranted for this bounded
+  validation fix. Next: complete and visually verify the claimed launcher rebuild, then rerun the
+  host-editor instrumentation draft twice in an exclusive emulator window.
+
 - Host-editor verification was invalidated by concurrent package removal again (2026-08-24).
   Codex fetched `origin`, booted the API 36 `term36` AVD, confirmed no other instrumentation
   process was active, and started only `HostEditValidationTest`. Logcat then recorded
