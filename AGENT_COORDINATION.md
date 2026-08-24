@@ -72,6 +72,8 @@ emulator, and visually inspect the launcher result before committing.
   This verification-only iteration changed no product/test/launcher resources and therefore
   did not run the full release gates or publish a release. Evidence is in the connected market
   Android-test report under `app/build/reports/androidTests/connected/debug/flavors/market/`.
+  Audit commit `b316aa0` is preserved locally; its scoped push was blocked because GitHub HTTPS
+  credentials are unavailable in this worker.
   Next: after the launcher claim completes, repair these semantics or adjust the instrumentation
   to query the merged selectable parent only if a UIAutomator tree proves the parent already
   exposes the correct state; rerun both focused tests before claiming either fix verified.
@@ -236,7 +238,8 @@ Append short timestamped entries. Keep this section concise.
 
 - 2026-08-24 Codex: started the existing API 36 AVD and executed the pending font-size and
   session-selection accessibility tests; both failed (0/2) at their semantic-state assertions.
-  Recorded the exact evidence without touching Claude's launcher resources or changing product code.
+  Recorded the exact evidence without touching Claude's launcher resources or changing product code;
+  commit `b316aa0` is local because the push lacked GitHub HTTPS credentials.
 
 - 2026-08-24 Codex: named the font-size slider for accessibility while preserving adjustable
   value semantics; focused Android-test compilation and every required static/unit/lint/APK gate
