@@ -62,6 +62,9 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
 - Codex: unclaimed
+- Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
+  changed during Codex's claimed verification and must be reconciled by its author before
+  another worker edits or stages it.
 
 ## Latest verified handoff
 
@@ -247,6 +250,12 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: selected-session verification was invalidated by concurrent execution:
+  the shared Kotlin daemon was repeatedly canceled, the debug package was removed 31 ms into
+  the final API 36 run, and `TerminalScreen.kt` changed beyond Codex's patch during the claim.
+  Codex restored its test edits, did not stage/commit, and left launcher and unattributed UI
+  changes untouched. The earlier focused compile completed via Gradle's fallback compiler.
 
 - 2026-08-24 Codex: repaired the font-size slider's localized adjustable semantics, passed the
   strengthened API 36 range/value/action regression (1/1) and every required static/unit/lint/APK
