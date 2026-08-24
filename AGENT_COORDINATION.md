@@ -61,12 +61,22 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: unclaimed
+- Codex: unclaimed.
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Pending focused emulator audit was externally interrupted: Codex installed the fresh
+  2026-08-24 10:58 market x86_64 app and Android-test APKs on API 36 and invoked
+  `HostEditValidationTest` plus `RootNavigationAccessibilityTest`. The first test process
+  crashed before an assertion, while logcat simultaneously recorded full removal of both
+  `app.terminalssh.secure.debug` and its test package; a follow-up package metadata query was
+  empty. The navigation test therefore never started. No source, test, launcher, or
+  `TerminalScreen.kt` file changed, and retrying was deferred to avoid colliding with Claude's
+  claimed launcher/emulator audit. Next: after Claude releases the emulator, reinstall one
+  matching app/test APK pair and rerun these two classes individually with a cleared logcat.
 
 - Settings-toggle merged accessibility target repair: f0d66a0 (`fix: merge settings toggle
   accessibility target`). The first API 36 execution of the existing regression failed
@@ -323,6 +333,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: attempted the claimed host-validation/navigation API 36 audit from fresh
+  existing artifacts; concurrent full package removal crashed the first test and prevented the
+  second. Cleared the verification-only claim without touching product, test, or launcher files.
 
 - 2026-08-24 Codex: made the home new-connection action a localized, explicit Button with a
   minimum 48 dp target and added a focused UI regression. All non-emulator gates passed; no
