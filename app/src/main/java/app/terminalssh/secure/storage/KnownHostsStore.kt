@@ -27,6 +27,15 @@ class KnownHostsStore(context: Context) {
         prefs.edit().remove("$prefix.algorithm").remove("$prefix.key").apply()
     }
 
+    /** Every trusted entry, for the Settings screen. */
+    fun all(): List<KnownHostsVerifier.KnownHost> =
+        prefs.all.keys.filter { it.endsWith(".algorithm") }.mapNotNull { entry ->
+            val identity = entry.removePrefix("host.").removeSuffix(".algorithm")
+            val port = identity.substringAfterLast(':').toIntOrNull() ?: return@mapNotNull null
+            val host = identity.substringBeforeLast(':')
+            get(host, port)
+        }
+
     private fun identity(host: String, port: Int) = "host.${host.lowercase()}:$port"
 
     companion object { private const val PREFS = "known_hosts_v1" }

@@ -1,0 +1,273 @@
+package app.terminalssh.secure.ui
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.terminalssh.secure.R
+import app.terminalssh.secure.ssh.SshSession
+import app.terminalssh.secure.ssh.SshSessionState
+import app.terminalssh.secure.ui.theme.Amber
+import app.terminalssh.secure.ui.theme.Cyan
+import app.terminalssh.secure.ui.theme.Danger
+import app.terminalssh.secure.ui.theme.Stroke
+import app.terminalssh.secure.ui.theme.TextSecondary
+import app.terminalssh.secure.ui.theme.Turquoise
+import app.terminalssh.secure.vm.AppViewModel
+import org.connectbot.terminal.Terminal
+
+@Composable
+fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
+    val sessions by viewModel.sessions.sessions.collectAsStateWithLifecycle()
+    val activeId by viewModel.sessions.activeId.collectAsStateWithLifecycle()
+    val active = sessions.firstOrNull { it.id == activeId }
+
+    if (active == null) {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(stringResource(R.string.hosts_empty_title), style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(10.dp))
+            Text(
+                stringResource(R.string.hosts_empty_body),
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextSecondary,
+            )
+            Spacer(Modifier.height(18.dp))
+            Text(
+                stringResource(R.string.tab_hosts),
+                color = Turquoise,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    .clickable(onClick = onGoToHosts)
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+            )
+        }
+        return
+    }
+
+    var snippetsOpen by remember(active.id) { mutableStateOf(false) }
+
+    Column(Modifier.fillMaxSize().imePadding()) {
+        SessionTabs(
+            sessions = sessions,
+            activeId = activeId,
+            onSelect = viewModel.sessions::select,
+            onClose = viewModel::closeSession,
+        )
+        StatusBar(active)
+        Box(Modifier.weight(1f).fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+            Terminal(
+                terminalEmulator = active.emulator,
+                keyboardEnabled = true,
+                showSoftKeyboard = true,
+                onPasteRequest = { active.requestPaste() },
+            )
+        }
+        KeyToolbar(active, onSnippets = { snippetsOpen = true })
+        PasteAndHostKeyDialogs(viewModel, active)
+        if (snippetsOpen) {
+            val snippets by viewModel.snippets.collectAsStateWithLifecycle()
+            SnippetSheet(
+                snippets = snippets,
+                onDismiss = { snippetsOpen = false },
+                onSave = viewModel::saveSnippet,
+                onInsert = { entry ->
+                    viewModel.insertSnippet(entry, active)
+                    snippetsOpen = false
+                },
+                onDelete = viewModel::deleteSnippet,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SessionTabs(
+    sessions: List<SshSession>,
+    activeId: String?,
+    onSelect: (String) -> Unit,
+    onClose: (String) -> Unit,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        sessions.forEach { session ->
+            val selected = session.id == activeId
+            val state by session.state.collectAsStateWithLifecycle()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        if (selected) MaterialTheme.colorScheme.surfaceVariant
+                        else MaterialTheme.colorScheme.surface,
+                    )
+                    .border(1.dp, if (selected) Turquoise.copy(alpha = 0.4f) else Stroke, RoundedCornerShape(12.dp))
+                    .clickable { onSelect(session.id) }
+                    .padding(start = 12.dp, end = 6.dp, top = 7.dp, bottom = 7.dp),
+            ) {
+                StatusDot(state)
+                Spacer(Modifier.width(8.dp))
+                Text(session.title, style = MaterialTheme.typography.labelLarge)
+                Icon(
+                    Icons.Outlined.Close,
+                    contentDescription = null,
+                    tint = TextSecondary,
+                    modifier = Modifier.size(26.dp).clickable { onClose(session.id) }.padding(6.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatusDot(state: SshSessionState) {
+    val target = when (state) {
+        is SshSessionState.Connected -> Turquoise
+        is SshSessionState.Connecting, is SshSessionState.Reconnecting -> Cyan
+        is SshSessionState.AwaitingHostKeyApproval -> Amber
+        is SshSessionState.Failed -> Danger
+        else -> TextSecondary
+    }
+    val color by animateColorAsState(target, label = "status")
+    Box(Modifier.size(8.dp).clip(CircleShape).background(color))
+}
+
+@Composable
+private fun StatusBar(session: SshSession) {
+    val state by session.state.collectAsStateWithLifecycle()
+    val text = when (val s = state) {
+        SshSessionState.Idle -> stringResource(R.string.state_idle)
+        SshSessionState.Connecting -> stringResource(R.string.state_connecting)
+        is SshSessionState.AwaitingHostKeyApproval -> stringResource(R.string.state_verifying)
+        SshSessionState.Connected -> stringResource(R.string.state_connected)
+        is SshSessionState.Reconnecting -> stringResource(R.string.state_reconnecting) + " ${s.attempt}/${s.max}"
+        is SshSessionState.Failed -> stringResource(R.string.state_failed) + " — ${s.message}"
+        SshSessionState.Closed -> stringResource(R.string.state_disconnected)
+    }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 4.dp),
+    ) {
+        StatusDot(state)
+        Spacer(Modifier.width(8.dp))
+        Text(text, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Spacer(Modifier.weight(1f))
+        Text(
+            session.profile.subtitle,
+            style = MaterialTheme.typography.labelSmall,
+            color = TextSecondary,
+            fontFamily = FontFamily.Monospace,
+        )
+    }
+}
+
+/**
+ * The single most important mobile-SSH affordance: keys a soft keyboard does not have.
+ * Ctrl and Alt latch for exactly one following keystroke, like a real terminal.
+ */
+@Composable
+private fun KeyToolbar(session: SshSession, onSnippets: () -> Unit) {
+    var ctrl by remember { mutableStateOf(false) }
+    var alt by remember { mutableStateOf(false) }
+
+    fun sendText(text: String) {
+        when {
+            ctrl && text.length == 1 -> {
+                val code = text.uppercase()[0].code - 64
+                if (code in 1..31) session.send(byteArrayOf(code.toByte()))
+                ctrl = false
+            }
+            alt && text.length == 1 -> {
+                session.send(byteArrayOf(0x1B) + text.encodeToByteArray())
+                alt = false
+            }
+            else -> session.send(text)
+        }
+    }
+
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        ToolKey(stringResource(R.string.snippets_short)) { onSnippets() }
+        ToolKey("Esc") { session.send(byteArrayOf(0x1B)) }
+        ToolKey("Tab") { session.send(byteArrayOf(0x09)) }
+        ToolKey("Ctrl", active = ctrl) { ctrl = !ctrl; alt = false }
+        ToolKey("Alt", active = alt) { alt = !alt; ctrl = false }
+        ToolKey("^C") { session.send(byteArrayOf(0x03)); ctrl = false }
+        ToolKey("^D") { session.send(byteArrayOf(0x04)); ctrl = false }
+        ToolKey("^L") { session.send(byteArrayOf(0x0C)); ctrl = false }
+        ToolKey("↑") { session.send("\u001B[A") }
+        ToolKey("↓") { session.send("\u001B[B") }
+        ToolKey("←") { session.send("\u001B[D") }
+        ToolKey("→") { session.send("\u001B[C") }
+        ToolKey("|") { sendText("|") }
+        ToolKey("/") { sendText("/") }
+        ToolKey("-") { sendText("-") }
+        ToolKey("~") { sendText("~") }
+        ToolKey("Home") { session.send("\u001B[H") }
+        ToolKey("End") { session.send("\u001B[F") }
+        ToolKey("PgUp") { session.send("\u001B[5~") }
+        ToolKey("PgDn") { session.send("\u001B[6~") }
+    }
+}
+
+@Composable
+private fun ToolKey(label: String, active: Boolean = false, onClick: () -> Unit) {
+    Text(
+        label,
+        style = MaterialTheme.typography.labelLarge,
+        color = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier
+            .clip(RoundedCornerShape(9.dp))
+            .background(if (active) Turquoise else MaterialTheme.colorScheme.surfaceVariant)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 13.dp, vertical = 9.dp),
+    )
+}
