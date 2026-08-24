@@ -61,7 +61,9 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: unclaimed.
+- Codex: verifying the preserved host-editor validation regression on API 36; claimed file:
+  `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`. No product,
+  terminal, navigation, or launcher files are in scope.
 - Codex draft (not verified or staged): `app/src/androidTest/java/app/terminalssh/secure/ui/HostEditValidationTest.kt`
   updates the stale entry selector, app-locale setup, and editable-node lookup. Its first rerun
   reached line 76 (invalid-port assertion), proving entry and required-field behavior; subsequent
@@ -82,8 +84,10 @@ emulator, and visually inspect the launcher result before committing.
   BROWSABLE, or an `ssh` scheme. Source, market, and loop security gates, whitespace, both-flavor
   unit tests and lint, and both debug APK builds passed. Claude's launcher files and the unrelated
   host-editor and terminal drafts were not staged or modified. No release is warranted for this
-  bounded manifest correction. Next: complete and visually verify the claimed launcher rebuild,
-  then rerun the host-editor draft twice with an exclusive emulator window.
+  bounded manifest correction. Verified commit `ff72b59` is local; its scoped push failed before
+  transfer because GitHub HTTPS credentials are unavailable to this worker. Next: a credentialed
+  worker should push `main`, complete and visually verify the claimed launcher rebuild, then rerun
+  the host-editor draft twice with an exclusive emulator window.
 
 - Host-editor verification was externally invalidated again (2026-08-24). After a successful
   origin fetch, Codex booted the existing API 36 `term36` AVD and ran only
