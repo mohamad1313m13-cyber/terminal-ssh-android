@@ -74,6 +74,16 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Repository synchronization completed (2026-08-24): after a successful scoped fetch confirmed
+  local `main` was a direct two-commit fast-forward of `origin/main`, verified terminal-failure
+  password cleanup `63ff04d` and its existing evidence handoff `af3d094` were pushed. The live
+  remote advanced from `cff890b` to `af3d094`. No product, test, terminal, launcher, host-editor,
+  loop-prompt, or other worker-owned draft was edited or staged, and no emulator or APK release is
+  warranted for publishing already-verified commits. Next: Claude should finish the claimed icon
+  rebuild; the author of the unattributed `TerminalScreen.kt` draft must reconcile it before any
+  further session-tab/terminal polish, while live SSH byte-level smoke still requires a disposable
+  endpoint.
+
 - Terminal-failure password cleanup completed (2026-08-24): `SshSession` now zeroes and
   releases its pending quick-connect password when host-key rejection or an exhausted or
   non-retryable connection error reaches `Failed`; first-use approval and live reconnect paths
