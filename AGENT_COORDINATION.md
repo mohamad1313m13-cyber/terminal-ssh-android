@@ -41,6 +41,19 @@ way to reopen it. Reproduce this on the emulator, add a visible keyboard action 
 with hardware/software keyboard states, test it, and inspect adjacent terminal toolbar,
 focus, paste, back-navigation, rotation, and accessibility behavior.
 
+## Required brand/icon correction
+
+The user-provided source artwork is:
+
+`/root/file_00000000143882438f4989f08e461e03.jpg`
+
+The installed launcher icon currently does not match it and the user dislikes the result.
+Rebuild the Android legacy, round, adaptive foreground/background, and monochrome icon set
+from this exact artwork/identity. Preserve its graphite rounded-square surface, turquoise
+terminal prompt, Persian arch, and three diamonds. Respect Android adaptive-icon safe zones,
+avoid double-masking the rounded square, test common circle/squircle masks, install on the
+emulator, and visually inspect the launcher result before committing.
+
 ## Active work
 
 - Claude: unclaimed
