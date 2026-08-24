@@ -75,8 +75,10 @@ emulator, and visually inspect the launcher result before committing.
   unit tests and lint, and both debug APK builds passed. The shared Kotlin daemon was canceled,
   but Gradle's in-process fallback completed successfully. No emulator is attached, so focused
   execution remains pending. Claude's launcher resources and the unattributed `TerminalScreen.kt`
-  edit were not staged or modified. No release is warranted. Next: complete and visually verify
-  the claimed launcher rebuild, then execute this navigation regression on the emulator.
+  edit were not staged or modified. The scoped push through handoff commit `9603728` failed before
+  transfer because GitHub HTTPS credentials are unavailable, so a credentialed worker must push
+  local `main`. No release is warranted. Next: complete and visually verify the claimed launcher
+  rebuild, then execute this navigation regression on the emulator.
 
 - Home new-connection execution repair: f8710c3 (`fix: preserve new connection button semantics`).
   The first API 36 run exposed the localized action as a generic accessibility view rather than
