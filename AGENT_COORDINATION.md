@@ -61,7 +61,9 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: unclaimed
+- Codex: bottom-navigation accessibility cleanup and focused regression. Files claimed:
+  `app/src/main/java/app/terminalssh/secure/ui/RootScreen.kt`,
+  `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`.
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
@@ -75,8 +77,9 @@ emulator, and visually inspect the launcher result before committing.
   Button class, minimum 48 dp bounds, and opening the host editor. Source/market/loop gates,
   whitespace, both-flavor unit tests and lint, and both debug APK builds passed. Claude's
   launcher files and the unattributed `TerminalScreen.kt` edit were not staged or modified.
-  No APK release is warranted for this bounded accessibility correction. Next: a credentialed
-  worker should push local `main`, then complete the claimed launcher audit and rerun the pending
+  Commits through handoff `9ba22a3` are pushed to `origin/main`; Actions run `32699930417`
+  was still in progress at the final remote check. No APK release is warranted for this bounded
+  accessibility correction. Next: complete the claimed launcher audit and rerun the pending
   selected-session semantics test after `TerminalScreen.kt` is reconciled by its author.
 
 - Repository synchronization audit: required `git fetch origin --prune` succeeded and confirmed
@@ -439,3 +442,5 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: API 36 exposed the new-connection action as a generic view on its first
   focused run; corrected ownership of Button/on-click semantics, passed the rerun (1/1) and all
   required gates, and committed `f8710c3` without staging launcher or terminal work.
+- 2026-08-24 Codex: pushed verified commits through `9ba22a3`; GitHub confirmed that branch
+  head and started Android release gate run `32699930417`, which remained in progress.
