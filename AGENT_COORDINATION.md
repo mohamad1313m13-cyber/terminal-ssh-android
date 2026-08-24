@@ -68,8 +68,8 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Settings-toggle merged accessibility target repair: pending commit (`fix: merge settings
-  toggle accessibility target`). The first API 36 execution of the existing regression failed
+- Settings-toggle merged accessibility target repair: f0d66a0 (`fix: merge settings toggle
+  accessibility target`). The first API 36 execution of the existing regression failed
   because its visible label resolved to a non-clickable child. Each security toggle now exposes
   one full-width, explicitly named Switch node with checked and click semantics; the regression
   queries that accessible name and passed on API 36 (1/1), including the 48 dp bound, state
