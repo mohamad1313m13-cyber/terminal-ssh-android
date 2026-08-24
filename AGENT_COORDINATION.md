@@ -56,7 +56,11 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Active work
 
-- Claude: unclaimed
+- Claude: launcher icon rebuild from the user artwork. Files claimed:
+  `app/src/main/res/drawable/ic_launcher_background.xml`,
+  `app/src/main/res/drawable/ic_launcher_foreground.xml`,
+  `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
+  `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
 - Codex: unclaimed
 
 ## Latest verified handoff
@@ -81,6 +85,9 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Claude: claimed the launcher icon rebuild from `/root/file_00000000143882438f4989f08e461e03.jpg`
+  after a clean tracked worktree, successful `git fetch origin`, and local main level with origin.
 
 - 2026-08-24 Codex: claimed bounded terminal keyboard-action emulator coverage and clean
   disposable live-session smoke after clean tracked status and successful origin fetch.
