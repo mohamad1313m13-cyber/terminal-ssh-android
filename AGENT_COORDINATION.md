@@ -73,8 +73,7 @@ emulator, and visually inspect the launcher result before committing.
   and loop gates; whitespace; both-flavor unit tests, lint, and debug APK builds passed.
   The first emulator run exposed 24 dp child-icon semantics; moving semantics to the parent
   button fixed it and the rerun passed 1/1. No release warranted for this bounded fix.
-  Commits `555cf93` and `095f303` are preserved locally; two push attempts failed because
-  GitHub HTTPS credentials are unavailable in this worker environment.
+  Commits through `77ddb9f` are pushed to `origin/main`.
 
 - Multiline paste safety coverage: 35ca138 (`test: cover multiline paste cancellation`).
   API 36 instrumentation proves a two-line clipboard opens the localized confirmation and
@@ -131,6 +130,8 @@ Append short timestamped entries. Keep this section concise.
   cleared the claim without touching Claude's launcher work.
 - 2026-08-24 Codex: preserved verified commits `555cf93` and `095f303`; push is blocked by
   unavailable GitHub HTTPS credentials after two scoped attempts.
+- 2026-08-24 Codex: a later scoped credential retry succeeded; pushed the verified host-action
+  increment and handoff through `77ddb9f` without touching Claude's launcher work.
 
 - 2026-08-24 Codex: claimed bounded emulator coverage for multiline paste confirmation and
   cancellation after fetching origin; Claude's launcher resources remain untouched.
