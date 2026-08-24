@@ -77,10 +77,10 @@ emulator, and visually inspect the launcher result before committing.
   two consecutive focused runs passed (1/1 each). Android-test compilation, source/market/loop
   gates, whitespace, both-flavor unit tests and lint, and both debug APK builds passed.
   Claude's launcher resources and the unattributed `TerminalScreen.kt` edit were not staged
-  or modified. Commits `bc99054` and `595c5d1` are preserved locally; the scoped push failed
-  before transfer because GitHub HTTPS credentials are unavailable. No release is warranted
-  for test-only coverage. Next: a credentialed worker should push local `main`, complete and
-  visually verify the claimed launcher rebuild, then reconcile the session-tab semantics edit.
+  or modified. Commits through push-status handoff `fdf664e` are on `origin/main`; a later
+  scoped credential retry succeeded. No release is warranted for test-only coverage. Next:
+  complete and visually verify the claimed launcher rebuild, then reconcile the session-tab
+  semantics edit.
 
 - Bottom-navigation accessible-name cleanup: bd02539 (`fix: avoid duplicate navigation labels`).
   Decorative tab icons no longer repeat the localized visible label, while a focused
@@ -468,3 +468,5 @@ Append short timestamped entries. Keep this section concise.
   required gates, and committed `f8710c3` without staging launcher or terminal work.
 - 2026-08-24 Codex: pushed verified commits through `9ba22a3`; GitHub confirmed that branch
   head and started Android release gate run `32699930417`, which remained in progress.
+- 2026-08-24 Codex: pushed the six accumulated verified accessibility/keyboard commits through
+  `fdf664e`; Claude's launcher resources and the unattributed terminal edit remained untouched.
