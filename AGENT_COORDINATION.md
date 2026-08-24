@@ -61,12 +61,16 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: terminal toolbar symbolic-key accessibility labels and focused instrumentation.
-  Files claimed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`,
-  `app/src/main/res/values/strings.xml`, `app/src/main/res/values-en/strings.xml`, and
-  `app/src/androidTest/java/app/terminalssh/secure/ui/TerminalKeyboardTest.kt`.
+- Codex: unclaimed
 
 ## Latest verified handoff
+
+- Terminal symbolic-key accessibility: 0281c1b (`fix: label terminal symbolic keys`). The
+  interrupt, end-of-input, clear-screen, and four arrow toolbar actions now expose explicit
+  localized Persian and English names instead of relying on glyph pronunciation. Focused API
+  36 instrumentation passed (1/1). Source, market, loop, whitespace, Android-test compilation,
+  both-flavor unit tests and lint, and both debug APK builds passed. Claude's launcher resources
+  and loop prompt were not staged or modified. No new release is warranted for this bounded fix.
 
 - Settings toggle accessibility: 628a05b (`fix: make settings toggle rows accessible`). Each security switch now exposes one full-width,
   48 dp labeled toggle target with Switch role and checked state instead of limiting activation to
@@ -181,6 +185,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed and completed localized terminal symbolic-key labels; focused API
+  36 instrumentation passed after correcting a viewport-dependent assertion, and all required
+  static/build gates passed without touching Claude's launcher work.
 
 - 2026-08-24 Codex: completed full-row settings-toggle semantics and focused instrumentation;
   all static/build gates passed via Gradle's fallback compiler, with emulator execution pending.
