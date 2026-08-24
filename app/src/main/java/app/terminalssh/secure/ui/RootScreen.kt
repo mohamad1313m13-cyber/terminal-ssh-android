@@ -136,10 +136,10 @@ private fun RowScope.TabItem(
         icon = {
             if (badge > 0) {
                 BadgedBox(badge = { Badge { Text("$badge") } }) {
-                    Icon(icon, contentDescription = label)
+                    Icon(icon, contentDescription = null)
                 }
             } else {
-                Icon(icon, contentDescription = label)
+                Icon(icon, contentDescription = null)
             }
         },
         label = { Text(label, style = MaterialTheme.typography.labelSmall) },

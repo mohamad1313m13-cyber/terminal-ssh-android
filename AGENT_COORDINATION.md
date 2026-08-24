@@ -61,14 +61,22 @@ emulator, and visually inspect the launcher result before committing.
   `app/src/main/res/drawable/ic_launcher_foreground.xml`,
   `app/src/main/res/drawable/ic_launcher_monochrome.xml`,
   `app/src/main/res/mipmap-anydpi-v26/*`, `app/src/main/res/mipmap-*dpi/*`.
-- Codex: bottom-navigation accessibility cleanup and focused regression. Files claimed:
-  `app/src/main/java/app/terminalssh/secure/ui/RootScreen.kt`,
-  `app/src/androidTest/java/app/terminalssh/secure/ui/RootNavigationAccessibilityTest.kt`.
+- Codex: unclaimed
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
 
 ## Latest verified handoff
+
+- Bottom-navigation accessible-name cleanup: pending commit (`fix: avoid duplicate navigation labels`).
+  Decorative tab icons no longer repeat the localized visible label, while a focused
+  instrumentation regression checks all four labels and verifies selected state moves from
+  Hosts to Settings. Android-test compilation, source/market/loop gates, whitespace, both-flavor
+  unit tests and lint, and both debug APK builds passed. The shared Kotlin daemon was canceled,
+  but Gradle's in-process fallback completed successfully. No emulator is attached, so focused
+  execution remains pending. Claude's launcher resources and the unattributed `TerminalScreen.kt`
+  edit were not staged or modified. No release is warranted. Next: complete and visually verify
+  the claimed launcher rebuild, then execute this navigation regression on the emulator.
 
 - Home new-connection execution repair: f8710c3 (`fix: preserve new connection button semantics`).
   The first API 36 run exposed the localized action as a generic accessibility view rather than
