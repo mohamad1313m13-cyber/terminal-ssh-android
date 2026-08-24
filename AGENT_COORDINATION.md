@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Session-tab accessibility: pending commit (`fix: expose selected terminal session`). Live
+- Session-tab accessibility: 228e12d (`fix: expose selected terminal session`). Live
   session tabs now use selectable tab semantics and report which terminal is active. Focused
   instrumentation covers the initial selected state and its transition when a second session
   is chosen; Android-test compilation passed, but no emulator was attached, so execution remains
