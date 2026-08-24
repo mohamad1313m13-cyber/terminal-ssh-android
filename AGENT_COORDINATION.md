@@ -68,7 +68,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Bottom-navigation accessible-name cleanup: pending commit (`fix: avoid duplicate navigation labels`).
+- Bottom-navigation accessible-name cleanup: bd02539 (`fix: avoid duplicate navigation labels`).
   Decorative tab icons no longer repeat the localized visible label, while a focused
   instrumentation regression checks all four labels and verifies selected state moves from
   Hosts to Settings. Android-test compilation, source/market/loop gates, whitespace, both-flavor
