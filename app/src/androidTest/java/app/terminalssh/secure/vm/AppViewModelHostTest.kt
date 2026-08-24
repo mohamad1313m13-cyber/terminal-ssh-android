@@ -76,4 +76,23 @@ class AppViewModelHostTest {
             viewModel.closeSession(session.id)
         }
     }
+
+    @Test fun sessionPasswordIsClearedAfterOpening() {
+        val viewModel = AppViewModel(app)
+        val password = charArrayOf('s', '3', 'c', 'r', 'e', 't')
+        val profile = HostProfile(
+            id = "session-password-test",
+            host = "127.0.0.1",
+            port = 1,
+            username = "tester",
+            auth = AuthMethod.Password(""),
+        )
+
+        val session = viewModel.openSession(profile, password)
+        try {
+            assertTrue(password.all { it == '\u0000' })
+        } finally {
+            viewModel.closeSession(session.id)
+        }
+    }
 }

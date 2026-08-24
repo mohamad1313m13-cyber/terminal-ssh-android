@@ -90,9 +90,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             _hosts.value = container.hosts.hosts()
             true
         } catch (_: Exception) {
-            password?.fill('\u0000')
             _toast.value = getApplication<Application>().getString(R.string.host_save_failed)
             false
+        } finally {
+            password?.fill('\u0000')
         }
     }
 
@@ -116,23 +117,27 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     // ---- sessions ----
 
     fun openSession(profile: HostProfile, password: CharArray? = null): SshSession {
-        val context = getApplication<Application>()
-        val session = SshSession(
-            id = UUID.randomUUID().toString(),
-            profile = profile,
-            client = container.client,
-            keepAlive = settings.keepAlive,
-            onClipboardCopy = { text -> copyToClipboard(context, text) },
-            onPasteRequest = { pasteRequested.value = true },
-        )
-        sessions.add(session)
-        container.hosts.touch(profile.id)
-        _hosts.value = container.hosts.hosts()
+        try {
+            val context = getApplication<Application>()
+            val session = SshSession(
+                id = UUID.randomUUID().toString(),
+                profile = profile,
+                client = container.client,
+                keepAlive = settings.keepAlive,
+                onClipboardCopy = { text -> copyToClipboard(context, text) },
+                onPasteRequest = { pasteRequested.value = true },
+            )
+            sessions.add(session)
+            container.hosts.touch(profile.id)
+            _hosts.value = container.hosts.hosts()
 
-        val bytes = password?.let { SecretEncoding.utf8(it) }
-        session.connect(bytes)
-        observe(session)
-        return session
+            val bytes = password?.let { SecretEncoding.utf8(it) }
+            session.connect(bytes)
+            observe(session)
+            return session
+        } finally {
+            password?.fill('\u0000')
+        }
     }
 
     private fun observe(session: SshSession) {

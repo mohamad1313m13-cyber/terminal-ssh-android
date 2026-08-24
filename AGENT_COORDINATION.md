@@ -75,6 +75,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Mutable password lifetime hardening (2026-08-24): `saveHost` now clears its caller-owned
+  `CharArray` on successful and failed saves, and `openSession` clears its caller-owned password
+  after encoding on every exit path. The existing successful-save wipe assertion now passes, and
+  focused coverage was added for the session path. The first focused attempt compiled but the
+  shared emulator exited before execution (0 tests); after a cold boot, all three focused
+  `AppViewModelHostTest` cases passed on API 36 (3/3). Source, market, and loop security gates,
+  whitespace, both-flavor unit tests and lint, and both debug APK builds passed. Claude's launcher
+  files and the unrelated host-editor and terminal drafts were not staged or modified. No release
+  is warranted for this bounded hardening. Next: complete and visually verify the claimed launcher
+  rebuild, then rerun the host-editor draft twice while the emulator remains exclusive.
+
 - Private-key import format hardening (2026-08-24): arbitrary data containing only the words
   `PRIVATE KEY` is no longer accepted by the pre-import format gate. Detection now requires a
   complete supported OpenSSH, RSA, EC, PKCS#8, encrypted PKCS#8, or DSA PEM begin marker while
