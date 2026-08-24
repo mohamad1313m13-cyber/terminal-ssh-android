@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Settings palette accessibility: pending commit. Each terminal palette now exposes a
+- Settings palette accessibility: 844a761 (`fix: expose terminal palette choices`). Each terminal palette now exposes a
   localized name, radio-button role and selected state from a 48 dp target; six targets fit
   a 360 dp handset without clipping. The focused API 36 test compiles and covers bounds,
   initial/changed selection, and persistence. Source, market, loop, whitespace, Android-test
