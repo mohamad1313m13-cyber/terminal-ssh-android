@@ -1,5 +1,6 @@
 package app.terminalssh.secure.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -51,6 +52,10 @@ fun RootScreen(viewModel: AppViewModel) {
     val sessions by viewModel.sessions.sessions.collectAsStateWithLifecycle()
     val toast by viewModel.toast.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
+
+    BackHandler(enabled = tab != Tab.HOSTS) {
+        tab = Tab.HOSTS
+    }
 
     LaunchedEffect(toast) {
         toast?.let {

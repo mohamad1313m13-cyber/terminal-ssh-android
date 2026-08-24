@@ -6,6 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
+import androidx.lifecycle.Lifecycle
 import app.terminalssh.secure.R
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -39,6 +40,29 @@ class RootNavigationAccessibilityTest {
             settings.click()
             assertTrue("settings tab did not become selected", waitUntil { isNavigationSelected(labels.last()) })
             assertFalse("previous tab remained selected", isNavigationSelected(labels.first()))
+        }
+    }
+
+    @Test
+    fun backFromSecondaryTabReturnsToHostsWithoutFinishingActivity() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val hosts = instrumentation.targetContext.getString(R.string.tab_hosts)
+            val settings = instrumentation.targetContext.getString(R.string.tab_settings)
+            val newConnection = instrumentation.targetContext.getString(R.string.home_new_connection)
+
+            assertTrue(device.wait(Until.hasObject(By.text(settings)), TIMEOUT_MS))
+            navigationLabel(hosts).click()
+            assertTrue("Hosts tab did not become selected", waitUntil { isNavigationSelected(hosts) })
+            navigationLabel(settings).click()
+            assertTrue("settings tab did not become selected", waitUntil { isNavigationSelected(settings) })
+
+            device.pressBack()
+
+            assertTrue(
+                "Back did not return to the Hosts screen",
+                device.wait(Until.hasObject(By.desc(newConnection)), TIMEOUT_MS),
+            )
+            assertTrue("Back finished the Activity", scenario.state == Lifecycle.State.RESUMED)
         }
     }
 
