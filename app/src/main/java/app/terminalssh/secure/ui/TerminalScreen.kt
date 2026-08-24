@@ -1,5 +1,8 @@
 package app.terminalssh.secure.ui
 
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -93,6 +97,7 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
     var snippetsOpen by remember(active.id) { mutableStateOf(false) }
     val terminalFocusRequester = remember(active.id) { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val rootView = LocalView.current
     val keyboardScope = rememberCoroutineScope()
 
     val showKeyboard = {
@@ -101,7 +106,17 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
             // Terminal is a custom editor. Let focus publish its input connection before
             // asking the IME to attach, otherwise rapid dismiss/reopen taps can be ignored.
             withFrameNanos { }
-            keyboardController?.show()
+            // The actual input connection belongs to termlib's embedded Android View, not
+            // the surrounding Compose focus node. Target it directly when available.
+            val imeView = rootView.findTerminalInputView()
+            if (imeView != null) {
+                imeView.requestFocus()
+                val inputMethodManager = imeView.context
+                    .getSystemService(InputMethodManager::class.java)
+                inputMethodManager.showSoftInput(imeView, InputMethodManager.SHOW_IMPLICIT)
+            } else {
+                keyboardController?.show()
+            }
         }
         Unit
     }
@@ -144,6 +159,19 @@ fun TerminalScreen(viewModel: AppViewModel, onGoToHosts: () -> Unit) {
         }
     }
 }
+
+private fun View.findTerminalInputView(): View? {
+    // ImeInputView is an internal Kotlin type in termlib, so identify the embedded text
+    // editor without reflecting into its implementation.
+    if (javaClass.name == TERMINAL_IME_VIEW_CLASS) return this
+    if (this !is ViewGroup) return null
+    for (index in 0 until childCount) {
+        getChildAt(index).findTerminalInputView()?.let { return it }
+    }
+    return null
+}
+
+private const val TERMINAL_IME_VIEW_CLASS = "org.connectbot.terminal.ImeInputView"
 
 @Composable
 private fun SessionTabs(
