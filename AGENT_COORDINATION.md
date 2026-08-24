@@ -65,7 +65,7 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Snippet delete accessibility: pending commit (`fix: identify snippet delete actions`). Each
+- Snippet delete accessibility: acd567c (`fix: identify snippet delete actions`). Each
   delete action now announces its snippet name from the full Material button. A focused API
   36 emulator test verified two distinct localized actions, a minimum 48 dp bound, removal of
   only the selected metadata record, and preservation of the other record (1/1). Source,
