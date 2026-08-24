@@ -57,24 +57,24 @@ emulator, and visually inspect the launcher result before committing.
 ## Active work
 
 - Claude: unclaimed
-- Codex: live-session terminal interaction audit and any narrowly required fix; files:
-  `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`, terminal-focused tests,
-  and this handoff
+- Codex: unclaimed
 
 ## Latest verified handoff
 
-- Version: 0.4.1 test release 2
-- Commit: 5256e0d (`fix: add reliable terminal keyboard action`)
+- Version: 0.4.1 test release 2 plus unreleased IME stabilization
+- Commit: 7214452 (`fix: sequence terminal focus before IME reopen`)
 - Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test2
 - Verified: source/market/loop gates; market and gplay compilation, unit tests, lint, and
-  debug APKs; six market emulator instrumentation tests; market debug APK install/launch.
-- Fixed: an always-visible 48 dp terminal keyboard action now refocuses the terminal and
-  explicitly requests the IME; extra keys remain independently scrollable. Session-close
-  and toolbar controls also have localized accessibility semantics and 48 dp targets.
-- Remaining risk: scripted live-session entry was not completed because the add-host sheet
-  shifted fields under IME resize; do one real-session dismiss/reopen tap test before release.
-- Next: complete the terminal interaction audit (keyboard reopen with a live session, paste,
-  back navigation, rotation, hardware keyboard), then restore the exact user-provided icon.
+  debug APKs; six market emulator instrumentation tests; fresh market APK install; cold
+  launch plus rotation/back smoke. All completed locally on 2026-08-24.
+- Fixed: the keyboard action now requests terminal focus, waits one Compose frame for the
+  custom editor input connection, then shows the IME. This addresses emulator evidence of
+  input-connection timeouts and cancelled IME transitions during rapid reopen attempts.
+- Remaining risk: a clean live SSH dismiss/reopen tap could not be completed safely because
+  the pre-existing emulator form had password-derived text mixed into ordinary fields. Do
+  not dump/reuse that form; clear it and create a fresh disposable test profile manually.
+- Next: perform that clean live-session test (keyboard, paste, hardware keyboard), then
+  restore the launcher icon from the exact user artwork. Rotation/back already smoke-pass.
 
 ## Work log
 
@@ -89,3 +89,6 @@ Append short timestamped entries. Keep this section concise.
   are public, including `TerminalSSH-v0.4.1-test2-market-universal-debug.apk`.
 - 2026-08-24 Codex: claimed live-session keyboard reopen and adjacent terminal interaction
   audit after a clean worktree and successful `git fetch origin`; GitHub CLI is unavailable.
+- 2026-08-24 Codex: committed IME focus sequencing fix `7214452`; all local gates, both
+  flavor test/lint/APK builds, six emulator tests, install, rotation, and back smoke passed.
+  Claim cleared; clean live SSH verification remains documented above.
