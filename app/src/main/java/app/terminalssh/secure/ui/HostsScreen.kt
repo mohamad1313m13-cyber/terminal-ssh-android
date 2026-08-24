@@ -44,8 +44,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
@@ -231,9 +233,13 @@ private fun HeroCard(
                 .background(Turquoise)
                 .clickable(onClick = onAdd)
                 .heightIn(min = 48.dp)
-                .semantics {
+                .clearAndSetSemantics {
                     contentDescription = newConnectionDescription
                     role = Role.Button
+                    onClick {
+                        onAdd()
+                        true
+                    }
                 }
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
