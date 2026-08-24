@@ -19,9 +19,10 @@ android {
         applicationId = "app.terminalssh.secure"
         minSdk = 26
         targetSdk = 36
-        versionCode = 5
-        versionName = "0.4.0"
+        versionCode = 6
+        versionName = "0.4.1"
         resourceConfigurations += listOf("fa", "en")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     // Iranian markets ship to devices that often have no Google Play Services at all,
@@ -138,4 +139,9 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation(kotlin("test"))
+
+    // Instrumentation: the vault's real constraints live in the AndroidKeyStore provider,
+    // which no JVM test can reach.
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
 }

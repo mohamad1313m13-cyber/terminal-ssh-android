@@ -91,6 +91,7 @@
     <string name="home_vault_badge">Vault امن</string>
     <string name="home_new_connection">اتصال جدید</string>
     <string name="keys_import_failed">خطا در وارد کردن کلید</string>
+    <string name="host_save_failed">ذخیرهٔ سرور انجام نشد؛ تنظیمات امنیتی دستگاه را بررسی کنید</string>
 <string name="keys_material_hash">هش یکپارچگی فایل کلید</string>
     <string name="settings_version">نسخه %1$s</string>
     <string name="snippets_title">دستورهای آماده</string>

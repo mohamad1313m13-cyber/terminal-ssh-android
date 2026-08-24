@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1 — AndroidKeyStore crash fix
+
+- Fixed the add-server crash caused by supplying a caller-generated GCM IV to an
+  AndroidKeyStore key that requires randomized encryption.
+- Added real-device/emulator instrumentation coverage for vault round trips, nonce
+  freshness, AAD isolation, deletion, and the complete ViewModel host-save path.
+- Host-save failures are now contained and surfaced to the user instead of terminating
+  the application.
+
 ## 0.4.0 — Loop 2: secure snippets + secret lifecycle
 
 - Added encrypted command snippets stored only in AndroidKeyStore-backed Vault (`VaultAad.SNIPPET`).

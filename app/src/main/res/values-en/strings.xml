@@ -91,6 +91,7 @@
     <string name="home_vault_badge">Secure vault</string>
     <string name="home_new_connection">New connection</string>
     <string name="keys_import_failed">Key import failed</string>
+    <string name="host_save_failed">Could not save the server; check the device security settings</string>
 <string name="keys_material_hash">Private-key material integrity hash</string>
     <string name="settings_version">Version %1$s</string>
     <string name="snippets_title">Command snippets</string>

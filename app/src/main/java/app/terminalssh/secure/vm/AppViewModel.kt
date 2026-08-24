@@ -72,21 +72,28 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     // ---- hosts ----
 
-    fun saveHost(profile: HostProfile, password: CharArray?) {
-        var stored = profile
-        if (password != null && password.isNotEmpty()) {
-            val ref = (profile.auth as? AuthMethod.Password)?.vaultRef?.takeIf { it.isNotBlank() }
-                ?: UUID.randomUUID().toString()
-            val bytes = SecretEncoding.utf8(password)
-            try {
-                container.vault.put(ref, bytes, VaultAad.PASSWORD)
-            } finally {
-                bytes.fill(0)
+    fun saveHost(profile: HostProfile, password: CharArray?): Boolean {
+        return try {
+            var stored = profile
+            if (password != null && password.isNotEmpty()) {
+                val ref = (profile.auth as? AuthMethod.Password)?.vaultRef?.takeIf { it.isNotBlank() }
+                    ?: UUID.randomUUID().toString()
+                val bytes = SecretEncoding.utf8(password)
+                try {
+                    container.vault.put(ref, bytes, VaultAad.PASSWORD)
+                } finally {
+                    bytes.fill(0)
+                }
+                stored = profile.copy(auth = AuthMethod.Password(ref))
             }
-            stored = profile.copy(auth = AuthMethod.Password(ref))
+            container.hosts.upsert(stored)
+            _hosts.value = container.hosts.hosts()
+            true
+        } catch (_: Exception) {
+            password?.fill('\u0000')
+            _toast.value = getApplication<Application>().getString(R.string.host_save_failed)
+            false
         }
-        container.hosts.upsert(stored)
-        _hosts.value = container.hosts.hosts()
     }
 
     fun deleteHost(profile: HostProfile) {

@@ -138,9 +138,10 @@ fun HostsScreen(
             initial = editing,
             onDismiss = { creating = false; editing = null },
             onSave = { profile, password ->
-                viewModel.saveHost(profile, password)
-                creating = false
-                editing = null
+                if (viewModel.saveHost(profile, password)) {
+                    creating = false
+                    editing = null
+                }
             },
             onDelete = { profile ->
                 viewModel.deleteHost(profile)

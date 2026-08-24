@@ -40,7 +40,7 @@ jobs:
       - name: Upload verification outputs
         uses: actions/upload-artifact@v4
         with:
-          name: terminal-0.4.0-verify-${{ github.sha }}
+          name: terminal-verify-${{ github.sha }}
           if-no-files-found: error
           path: |
             app/build/outputs/apk/market/debug/*.apk
@@ -103,7 +103,7 @@ jobs:
         if: steps.signing.outputs.configured == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: terminal-0.4.0-market-${{ github.ref_name }}
+          name: terminal-market-${{ github.ref_name }}
           if-no-files-found: error
           path: |
             app/build/outputs/apk/market/release/*.apk
@@ -123,21 +123,21 @@ jobs:
         uses: actions/download-artifact@v4
         id: market
         with:
-          pattern: terminal-0.4.0-market-*
+          pattern: terminal-market-*
           path: assets
           merge-multiple: true
         continue-on-error: true
       - name: Download verification artifacts
         uses: actions/download-artifact@v4
         with:
-          name: terminal-0.4.0-verify-${{ github.sha }}
+          name: terminal-verify-${{ github.sha }}
           path: verify
       - name: Assemble release assets
         run: |
           mkdir -p assets
           find verify assets -type f \( -name '*.apk' -o -name '*.aab' \) \
             -exec sh -c 'f="$1"; n="$(basename "$f")"; [ -f "assets/$n" ] || cp -n "$f" "assets/$n"' _ {} \;
-          cp -n assets/app-market-universal-debug.apk assets/TerminalSSH-0.4.0-market-universal-debug.apk 2>/dev/null || true
+          cp -n assets/app-market-universal-debug.apk "assets/TerminalSSH-${{ github.ref_name }}-market-universal-debug.apk" 2>/dev/null || true
           find assets -maxdepth 1 -type f -print | sort
           find assets -maxdepth 1 -type f -exec sha256sum {} \;
       - name: Publish GitHub Release
