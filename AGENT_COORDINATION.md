@@ -68,15 +68,16 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
-- Pending focused emulator audit was externally interrupted: Codex installed the fresh
-  2026-08-24 10:58 market x86_64 app and Android-test APKs on API 36 and invoked
-  `HostEditValidationTest` plus `RootNavigationAccessibilityTest`. The first test process
-  crashed before an assertion, while logcat simultaneously recorded full removal of both
-  `app.terminalssh.secure.debug` and its test package; a follow-up package metadata query was
-  empty. The navigation test therefore never started. No source, test, launcher, or
-  `TerminalScreen.kt` file changed, and retrying was deferred to avoid colliding with Claude's
-  claimed launcher/emulator audit. Next: after Claude releases the emulator, reinstall one
-  matching app/test APK pair and rerun these two classes individually with a cleared logcat.
+- Pending focused emulator audit completed after the initial external interruption: Codex
+  reran both market regressions individually on the API 36 `term36` emulator. Both failed
+  deterministically (0/1 each). `HostEditValidationTest` timed out at line 52 before finding
+  the expected Add-host entry. `RootNavigationAccessibilityTest` found all four labels but the
+  Hosts text node itself did not expose selected state (`initial tab was not selected`). Reports
+  are under `app/build/reports/androidTests/connected/debug/flavors/market/`. No product, test,
+  launcher, or concurrent `TerminalScreen.kt` source changed. Remote inspection failed because
+  GitHub DNS was unavailable. Next: after Claude clears the launcher/emulator claim, inspect
+  UIAutomator trees and update each test to query the actual merged actionable/selected parent,
+  changing product semantics only if those parents are also deficient.
 
 - Settings-toggle merged accessibility target repair: f0d66a0 (`fix: merge settings toggle
   accessibility target`). The first API 36 execution of the existing regression failed
