@@ -85,6 +85,34 @@ class TerminalKeyboardTest {
     }
 
     @Test
+    fun keyboardActionFocusesTerminalWhenHardwareKeyboardSuppressesIme() {
+        writeSecureSetting("show_ime_with_hard_keyboard", "0")
+        app.sessions.add(idleSession(id = "hardware-keyboard", title = "Hardware keyboard test"))
+
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            val keyboardAction = instrumentation.targetContext.getString(R.string.show_keyboard)
+
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+            assertTrue(device.wait(Until.hasObject(By.desc(keyboardAction)), UI_TIMEOUT_MS))
+
+            device.pressBack()
+            assertTrue(waitForIme(scenario, visible = false))
+            device.findObject(By.desc(keyboardAction)).click()
+
+            // IME visibility after an explicit app request varies by Android version even
+            // when this hardware-keyboard preference is disabled. The app-controlled
+            // invariant is that termlib's text editor receives focus for physical keys.
+            assertTrue(focusedViewSummary(scenario), waitForFocusedTextEditor(scenario))
+
+            writeSecureSetting("show_ime_with_hard_keyboard", "1")
+            device.findObject(By.desc(keyboardAction)).click()
+            assertTrue(waitForIme(scenario, visible = true))
+        }
+    }
+
+    @Test
     fun closeActionNamesAndClosesOnlyItsSession() {
         val firstTitle = "First host"
         val secondTitle = "Second host"
@@ -272,6 +300,30 @@ class TerminalKeyboardTest {
             Thread.sleep(IME_POLL_MS)
         }
         return false
+    }
+
+    private fun waitForFocusedTextEditor(scenario: ActivityScenario<MainActivity>): Boolean {
+        repeat(IME_POLL_ATTEMPTS) {
+            var hasFocusedEditor = false
+            scenario.onActivity { activity ->
+                hasFocusedEditor = activity.currentFocus?.let { focused ->
+                    focused.hasFocus() && focused.onCheckIsTextEditor()
+                } == true
+            }
+            if (hasFocusedEditor) return true
+            Thread.sleep(IME_POLL_MS)
+        }
+        return false
+    }
+
+    private fun focusedViewSummary(scenario: ActivityScenario<MainActivity>): String {
+        var summary = "No focused view"
+        scenario.onActivity { activity ->
+            activity.currentFocus?.let { focused ->
+                summary = "Focused ${focused.javaClass.name}; textEditor=${focused.onCheckIsTextEditor()}"
+            }
+        }
+        return summary
     }
 
     private fun readSecureSetting(name: String): String =
