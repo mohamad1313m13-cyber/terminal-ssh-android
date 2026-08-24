@@ -68,6 +68,17 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Home new-connection accessibility: pending commit (`fix: expose new connection button`).
+  The hero action now exposes one localized Button node and guarantees a minimum 48 dp touch
+  target; focused instrumentation covers its name, role, bounds, and opening the host editor.
+  Android-test compilation, source/market/loop gates, whitespace, both-flavor unit tests and
+  lint, and both debug APK builds passed. The shared Kotlin daemon was canceled, but Gradle's
+  in-process fallback completed successfully. No emulator is attached, so focused execution
+  remains pending. Claude's launcher files and the unattributed `TerminalScreen.kt` change were
+  not staged or modified. No release is warranted for this accessibility-only increment.
+  Next: complete and visually verify the claimed launcher rebuild, then execute this focused
+  regression with the pending selected-session test on the emulator.
+
 - Font-size slider semantics repair: cd3a683 (`fix: restore adjustable font size semantics`).
   The localized “Font size”/“اندازه قلم”
   node now explicitly exposes its 10–24 sp adjustable range, current value, and accessibility
@@ -250,6 +261,10 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: made the home new-connection action a localized, explicit Button with a
+  minimum 48 dp target and added a focused UI regression. All non-emulator gates passed; no
+  device was attached for execution. Launcher and terminal dirty work remained untouched.
 
 - 2026-08-24 Codex: selected-session verification was invalidated by concurrent execution:
   the shared Kotlin daemon was repeatedly canceled, the debug package was removed 31 ms into

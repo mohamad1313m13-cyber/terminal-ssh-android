@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,7 +44,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -173,6 +176,7 @@ private fun HeroCard(
     sessionCount: Int,
     onAdd: () -> Unit,
 ) {
+    val newConnectionDescription = stringResource(R.string.home_new_connection)
     Column(
         Modifier
             .fillMaxWidth()
@@ -226,6 +230,11 @@ private fun HeroCard(
                 .clip(RoundedCornerShape(14.dp))
                 .background(Turquoise)
                 .clickable(onClick = onAdd)
+                .heightIn(min = 48.dp)
+                .semantics {
+                    contentDescription = newConnectionDescription
+                    role = Role.Button
+                }
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {

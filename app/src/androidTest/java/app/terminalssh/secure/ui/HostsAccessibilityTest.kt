@@ -69,6 +69,26 @@ class HostsAccessibilityTest {
         }
     }
 
+    @Test
+    fun newConnectionIsNamedLargeButtonAndOpensEditor() {
+        ActivityScenario.launch(MainActivity::class.java).use {
+            val newConnection = instrumentation.targetContext.getString(R.string.home_new_connection)
+
+            assertTrue(device.wait(Until.hasObject(By.desc(newConnection)), TIMEOUT_MS))
+            val action = device.findObject(By.desc(newConnection))
+            assertTrue("new connection was not exposed as a button", action.className == "android.widget.Button")
+            assertTouchTargetAtLeast48Dp(newConnection)
+
+            action.click()
+            assertTrue(
+                device.wait(
+                    Until.hasObject(By.text(instrumentation.targetContext.getString(R.string.hosts_add))),
+                    TIMEOUT_MS,
+                ),
+            )
+        }
+    }
+
     private fun assertTouchTargetAtLeast48Dp(description: String) {
         val bounds = device.findObject(By.desc(description)).visibleBounds
         val minimumPx = (48 * instrumentation.targetContext.resources.displayMetrics.density).toInt()
