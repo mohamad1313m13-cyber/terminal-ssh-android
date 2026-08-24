@@ -77,8 +77,10 @@ emulator, and visually inspect the launcher result before committing.
   both-flavor unit tests and lint, and both debug APK builds passed. The shared Kotlin daemon was
   repeatedly canceled, but Gradle's in-process fallback completed successfully. Claude's launcher
   files and the concurrent `TerminalScreen.kt` edit were not staged or modified. No release is
-  warranted for this bounded accessibility correction. Next: complete and visually verify the
-  claimed launcher rebuild, then reconcile the session-tab semantics edit.
+  warranted for this bounded accessibility correction. Handoff commit `05a2f6f` is local; the
+  scoped push failed before transfer because GitHub HTTPS credentials are unavailable to this
+  worker. Next: a credentialed worker should push `main`, complete and visually verify the claimed
+  launcher rebuild, then reconcile the session-tab semantics edit.
 
 - Hardware-keyboard terminal focus coverage: bc99054 (`test: cover hardware keyboard terminal focus`).
   API 36 instrumentation now covers the visible keyboard action with Android's
