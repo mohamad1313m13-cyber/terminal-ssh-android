@@ -70,6 +70,8 @@ emulator, and visually inspect the launcher result before committing.
   48 dp target; instrumentation proves that both distinct actions are discoverable and that
   selecting one removes only its intended session. Verified in an isolated clean checkout
   because Claude's active launcher rebuild temporarily has duplicate mdpi resource names.
+- Push status: blocked after two attempts because the HTTPS remote has no GitHub credentials
+  in either the sandboxed or approved execution context; local `main` contains the handoff.
 - Tests: source, market, and loop gates passed; market and gplay unit tests, lint, and debug
   APK builds passed; both `TerminalKeyboardTest` cases passed on the API 36 emulator.
 - Release: none for this accessibility-only increment; the latest test release remains below.
@@ -103,6 +105,8 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-24 Codex: verified session-specific close announcements in both locales and targeted
   close behavior with both API 36 terminal tests; all static, unit, lint, and APK gates passed
   in an isolated clean checkout. Committed `6a48ffb`; claim cleared, no release warranted.
+- 2026-08-24 Codex: push blocked twice by missing HTTPS credentials; preserved both local
+  commits and Claude's staged/uncommitted launcher files without modification.
 
 - 2026-08-24 Codex: claimed bounded terminal IME rotation/repeated-reopen instrumentation
   after a clean tracked worktree and successful `git fetch origin`; launcher resources remain
