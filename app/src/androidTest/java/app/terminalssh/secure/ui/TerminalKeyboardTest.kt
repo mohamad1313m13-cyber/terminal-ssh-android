@@ -136,6 +136,31 @@ class TerminalKeyboardTest {
         }
     }
 
+    @Test
+    fun modifierKeysExposeAndUpdateToggleState() {
+        app.sessions.add(idleSession(id = "modifier-semantics", title = "Modifier test"))
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+
+            val ctrl = device.wait(Until.findObject(By.text("Ctrl")), UI_TIMEOUT_MS)
+            val alt = device.wait(Until.findObject(By.text("Alt")), UI_TIMEOUT_MS)
+            assertTrue(ctrl.isCheckable)
+            assertFalse(ctrl.isChecked)
+            assertTrue(alt.isCheckable)
+            assertFalse(alt.isChecked)
+
+            ctrl.click()
+            assertTrue(device.wait(Until.findObject(By.text("Ctrl")), UI_TIMEOUT_MS).isChecked)
+
+            alt.click()
+            assertFalse(device.wait(Until.findObject(By.text("Ctrl")), UI_TIMEOUT_MS).isChecked)
+            assertTrue(device.wait(Until.findObject(By.text("Alt")), UI_TIMEOUT_MS).isChecked)
+        }
+    }
+
     private fun dismissAndReopenKeyboard(
         scenario: ActivityScenario<MainActivity>,
         keyboardAction: String,

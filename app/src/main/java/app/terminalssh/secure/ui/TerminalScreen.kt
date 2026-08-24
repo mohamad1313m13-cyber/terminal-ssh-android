@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +44,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
@@ -310,8 +312,8 @@ private fun KeyToolbar(
             ToolKey(stringResource(R.string.snippets_short)) { onSnippets() }
             ToolKey("Esc") { session.send(byteArrayOf(0x1B)) }
             ToolKey("Tab") { session.send(byteArrayOf(0x09)) }
-            ToolKey("Ctrl", active = ctrl) { ctrl = !ctrl; alt = false }
-            ToolKey("Alt", active = alt) { alt = !alt; ctrl = false }
+            ToolKey("Ctrl", active = ctrl, toggle = true) { ctrl = !ctrl; alt = false }
+            ToolKey("Alt", active = alt, toggle = true) { alt = !alt; ctrl = false }
             ToolKey("^C") { session.send(byteArrayOf(0x03)); ctrl = false }
             ToolKey("^D") { session.send(byteArrayOf(0x04)); ctrl = false }
             ToolKey("^L") { session.send(byteArrayOf(0x0C)); ctrl = false }
@@ -335,6 +337,7 @@ private fun KeyToolbar(
 private fun ToolKey(
     label: String,
     active: Boolean = false,
+    toggle: Boolean = false,
     contentDescription: String? = null,
     onClick: () -> Unit,
 ) {
@@ -350,7 +353,13 @@ private fun ToolKey(
                     this.contentDescription = contentDescription
                 } else Modifier,
             )
-            .clickable(onClick = onClick)
+            .then(
+                if (toggle) Modifier.toggleable(
+                    value = active,
+                    role = Role.Button,
+                    onValueChange = { onClick() },
+                ) else Modifier.clickable(onClick = onClick),
+            )
             .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
             .padding(horizontal = 13.dp, vertical = 9.dp),
     )

@@ -65,6 +65,16 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- Terminal modifier accessibility (pending commit): Ctrl and Alt now expose Android toggle
+  semantics and current checked state while preserving their mutual exclusion and 48 dp
+  targets. Focused API 36 instrumentation passed (1/1); an initial run was externally
+  interrupted when the shared app package was removed during Claude's launcher audit, with
+  no assertion/product crash. Source, market, loop, whitespace, Android-test compilation,
+  and both-flavor unit/lint/APK gates passed. Claude's launcher resources and loop prompt
+  were not staged or modified by Codex. No release warranted for this bounded accessibility
+  fix. Next safe task: wait for Claude's launcher claim, then inspect the committed icon set
+  and complete any remaining common-mask/emulator launcher verification.
+
 - Settings palette accessibility: 844a761 (`fix: expose terminal palette choices`). Each terminal palette now exposes a
   localized name, radio-button role and selected state from a 48 dp target; six targets fit
   a 360 dp handset without clipping. The focused API 36 test compiles and covers bounds,
