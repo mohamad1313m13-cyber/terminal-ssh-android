@@ -74,8 +74,9 @@ emulator, and visually inspect the launcher result before committing.
   the expected Add-host entry. `RootNavigationAccessibilityTest` found all four labels but the
   Hosts text node itself did not expose selected state (`initial tab was not selected`). Reports
   are under `app/build/reports/androidTests/connected/debug/flavors/market/`. No product, test,
-  launcher, or concurrent `TerminalScreen.kt` source changed. Remote inspection failed because
-  GitHub DNS was unavailable. Next: after Claude clears the launcher/emulator claim, inspect
+  launcher, or concurrent `TerminalScreen.kt` source changed. Evidence commit `8641f40` is local;
+  the scoped push failed before transfer because GitHub HTTPS credentials are unavailable.
+  Next: after Claude clears the launcher/emulator claim, inspect
   UIAutomator trees and update each test to query the actual merged actionable/selected parent,
   changing product semantics only if those parents are also deficient.
 
