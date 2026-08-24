@@ -180,7 +180,6 @@ private fun SessionTabs(
     onSelect: (String) -> Unit,
     onClose: (String) -> Unit,
 ) {
-    val closeDescription = stringResource(R.string.close_session)
     Row(
         Modifier
             .fillMaxWidth()
@@ -191,6 +190,7 @@ private fun SessionTabs(
         sessions.forEach { session ->
             val selected = session.id == activeId
             val state by session.state.collectAsStateWithLifecycle()
+            val closeDescription = stringResource(R.string.close_session, session.title)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier

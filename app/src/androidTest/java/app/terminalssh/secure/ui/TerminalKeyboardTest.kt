@@ -73,6 +73,30 @@ class TerminalKeyboardTest {
         }
     }
 
+    @Test
+    fun closeActionNamesAndClosesOnlyItsSession() {
+        val firstTitle = "First host"
+        val secondTitle = "Second host"
+        app.sessions.add(idleSession(id = "first-session", title = firstTitle))
+        app.sessions.add(idleSession(id = "second-session", title = secondTitle))
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            val terminalTab = instrumentation.targetContext.getString(R.string.tab_terminal)
+            val firstClose = instrumentation.targetContext.getString(R.string.close_session, firstTitle)
+            val secondClose = instrumentation.targetContext.getString(R.string.close_session, secondTitle)
+
+            assertTrue(device.wait(Until.hasObject(By.text(terminalTab)), UI_TIMEOUT_MS))
+            device.findObject(By.text(terminalTab)).click()
+            assertTrue(device.wait(Until.hasObject(By.desc(firstClose)), UI_TIMEOUT_MS))
+            assertTrue(device.wait(Until.hasObject(By.desc(secondClose)), UI_TIMEOUT_MS))
+
+            device.findObject(By.desc(firstClose)).click()
+
+            assertTrue(device.wait(Until.gone(By.desc(firstClose)), UI_TIMEOUT_MS))
+            assertTrue(device.hasObject(By.desc(secondClose)))
+        }
+    }
+
     private fun dismissAndReopenKeyboard(
         scenario: ActivityScenario<MainActivity>,
         keyboardAction: String,
@@ -84,11 +108,14 @@ class TerminalKeyboardTest {
         assertTrue(waitForIme(scenario, visible = true))
     }
 
-    private fun idleSession(): SshSession = SshSession(
-        id = "keyboard-regression",
+    private fun idleSession(
+        id: String = "keyboard-regression",
+        title: String = "Keyboard test",
+    ): SshSession = SshSession(
+        id = id,
         profile = HostProfile(
-            id = "keyboard-regression-host",
-            label = "Keyboard test",
+            id = "$id-host",
+            label = title,
             host = "127.0.0.1",
             port = 1,
             username = "tester",

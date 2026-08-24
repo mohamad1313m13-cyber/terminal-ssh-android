@@ -63,7 +63,7 @@
     <string name="paste_confirm_body">این متن مستقیماً در ترمینال اجرا می‌شود.</string>
     <string name="paste">چسباندن</string>
     <string name="show_keyboard">نمایش صفحه‌کلید</string>
-    <string name="close_session">بستن سشن</string>
+    <string name="close_session">بستن سشن %1$s</string>
 
     <string name="notif_channel">سشن‌های فعال</string>
     <string name="notif_title">ترمینال SSH</string>
