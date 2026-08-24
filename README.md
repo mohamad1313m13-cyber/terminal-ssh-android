@@ -15,16 +15,16 @@ A secure, open-source, Persian-first SSH client for Android with a real terminal
 
 برای نصب و آزمایش روی اکثر گوشی‌ها، نسخهٔ یکپارچهٔ بازار را دریافت کنید:
 
-### [Download Terminal SSH 0.4.1 — Universal APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test1)
+### [Download Terminal SSH 0.4.1 — Universal APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test3/TerminalSSH-v0.4.1-test3-market-universal-debug.apk)
 
 | Build | مناسب برای | Download |
 | --- | --- | --- |
-| Market Universal | پیشنهاد‌شده برای تست روی همهٔ معماری‌ها؛ بدون Google Play Services | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test1/TerminalSSH-v0.4.1-test1-market-universal-debug.apk) |
-| Market ARM64 | بیشتر گوشی‌های جدید؛ فایل کوچک‌تر | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test1/app-market-arm64-v8a-debug.apk) |
-| Market ARMv7 | گوشی‌های قدیمی ۳۲ بیتی | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test1/app-market-armeabi-v7a-debug.apk) |
-| Google Play Universal | نسخهٔ دارای مرز اختیاری Google Sign-In | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test1/app-gplay-universal-debug.apk) |
+| Market Universal | پیشنهاد‌شده برای تست روی همهٔ معماری‌ها؛ بدون Google Play Services | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test3/TerminalSSH-v0.4.1-test3-market-universal-debug.apk) |
+| Market ARM64 | بیشتر گوشی‌های جدید؛ فایل کوچک‌تر | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test3/app-market-arm64-v8a-debug.apk) |
+| Market ARMv7 | گوشی‌های قدیمی ۳۲ بیتی؛ فایل کوچک‌تر | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test3/app-market-armeabi-v7a-debug.apk) |
+| Google Play Universal | نسخهٔ دارای مرز اختیاری Google Sign-In | [Download APK](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/download/v0.4.1-test3/app-gplay-universal-debug.apk) |
 
-[مشاهدهٔ همهٔ نسخه‌ها و فایل‌ها](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases) · [وضعیت ساخت GitHub Actions](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/actions/workflows/android-release.yml)
+[مشاهدهٔ همهٔ فایل‌های نسخهٔ آزمایشی ۳](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test3) · [وضعیت ساخت GitHub Actions](https://github.com/mohamad1313m13-cyber/terminal-ssh-android/actions/workflows/android-release.yml)
 
 > این فایل‌ها build آزمایشی و امضاشده با debug key هستند و برای تست مستقیم روی گوشی مناسب‌اند. نسخهٔ رسمی بازار باید با keystore ناشر امضا شود.
 

@@ -65,6 +65,11 @@ emulator, and visually inspect the launcher result before committing.
 
 ## Latest verified handoff
 
+- README release-link correction ready: the primary CTA and four listed downloads now point
+  to `v0.4.1-test3`; all five changed GitHub URLs returned HTTP 200. Source, market, loop,
+  and whitespace gates passed. Android builds were not rerun for this docs-only increment
+  while Claude's launcher resources are intentionally incomplete. No release warranted.
+
 - Accessibility commit: 6a48ffb (`fix: identify session close actions`). Each session-tab
   close control now announces its host title in Persian and English while retaining its
   48 dp target; instrumentation proves that both distinct actions are discoverable and that
@@ -99,6 +104,11 @@ emulator, and visually inspect the launcher result before committing.
 ## Work log
 
 Append short timestamped entries. Keep this section concise.
+
+- 2026-08-24 Codex: claimed the bounded README download-link correction after fetching
+  origin and preserving Claude's active launcher-resource work unchanged.
+- 2026-08-24 Codex: verified all five test3 release URLs with HTTP 200 plus source, market,
+  loop, and whitespace gates; claim cleared with launcher work still untouched.
 
 - 2026-08-24 Codex: claimed bounded TalkBack-specific session close labeling and targeted
   emulator coverage after confirming Claude's launcher resource claim and fetching origin.
