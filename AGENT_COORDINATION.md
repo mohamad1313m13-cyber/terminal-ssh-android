@@ -57,18 +57,22 @@ emulator, and visually inspect the launcher result before committing.
 ## Active work
 
 - Claude: unclaimed
-- Codex: terminal soft-keyboard reopen and adjacent terminal toolbar/focus/accessibility polish
-  (`TerminalScreen.kt`, terminal strings, focused UI/instrumentation tests, and this handoff)
+- Codex: unclaimed
 
 ## Latest verified handoff
 
-- Version: 0.4.1 test release
-- Commit: 8686421a49e346d9bfef77e68b253d0b23c6d818
+- Version: 0.4.1 test release plus verified keyboard UX increment
+- Commit: 5256e0d (`fix: add reliable terminal keyboard action`)
 - Release: https://github.com/mohamad1313m13-cyber/terminal-ssh-android/releases/tag/v0.4.1-test1
-- Verified: source/market/loop gates, both flavor unit tests and lint, both debug APKs,
-  six Android emulator tests including AndroidKeyStore host-save and session-flow handling.
-- Fixed: add-server crash caused by caller-provided AES-GCM IV with AndroidKeyStore.
-- Next: terminal keyboard reopen UX, followed by complete terminal interaction audit.
+- Verified: source/market/loop gates; market and gplay compilation, unit tests, lint, and
+  debug APKs; six market emulator instrumentation tests; market debug APK install/launch.
+- Fixed: an always-visible 48 dp terminal keyboard action now refocuses the terminal and
+  explicitly requests the IME; extra keys remain independently scrollable. Session-close
+  and toolbar controls also have localized accessibility semantics and 48 dp targets.
+- Remaining risk: scripted live-session entry was not completed because the add-host sheet
+  shifted fields under IME resize; do one real-session dismiss/reopen tap test before release.
+- Next: complete the terminal interaction audit (keyboard reopen with a live session, paste,
+  back navigation, rotation, hardware keyboard), then restore the exact user-provided icon.
 
 ## Work log
 
@@ -76,3 +80,5 @@ Append short timestamped entries. Keep this section concise.
 
 - 2026-08-24 Codex: claimed the top-priority terminal keyboard-reopen scope after confirming
   a clean worktree; `git fetch origin` is currently blocked by read-only `.git/FETCH_HEAD`.
+- 2026-08-24 Codex: verified and committed keyboard action/accessibility increment `5256e0d`;
+  claim cleared. Fetch succeeded with scoped approval; live-session manual tap remains above.
