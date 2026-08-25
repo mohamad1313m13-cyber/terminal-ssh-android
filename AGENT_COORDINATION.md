@@ -73,6 +73,20 @@ emulator, and visually inspect the launcher result before committing.
   another worker edits or stages it.
 ## Latest verified handoff
 
+- 0.5.0 feature branch integrated (2026-08-25): the unmerged `fix/v0.4.1-review-findings` branch
+  authored overnight by Claude (coding-agent installer with tmux persistence, SFTP browser with
+  resumable queue, in-app Ed25519/EC/RSA key generation, OpenSSH config import/export, biometric
+  app lock, fuzzy search, per-host notes/env/reconnect budget, schema-driven settings, five
+  community palettes, haptics, adaptive toolbar, animated splash, destructive-command confirm,
+  agent API keys in vault) was merged into main together with this window's launcher rebuild.
+  Unverified host-editor and clipboard drafts were first preserved on branch
+  `preserved/drafts-2026-08-25` per protocol. Version bumped to 0.5.0 / versionCode 7 with all
+  three release gates updated; the splash theme reference to the deleted foreground drawable was
+  repointed at `@mipmap/ic_launcher_foreground`. Source/market/loop gates, both-flavor unit tests,
+  lint, and both debug APK builds pass (`BUILD SUCCESSFUL`). Drafts on the preservation branch
+  remain unverified and must be re-based onto 0.5.0 before any further claim. Next: publish and
+  visually smoke-test the 0.5.0 build, then reconcile or retire the preserved drafts.
+
 - Launcher icon rebuild completed (2026-08-25): the full adaptive/legacy/round/monochrome set was
   regenerated from the user artwork `/root/file_00000000143882438f4989f08e461e03.jpg` (graphite
   gradient surface `#242529`→`#101115`, turquoise prompt `#11E8A4`, crenellated arch, three
