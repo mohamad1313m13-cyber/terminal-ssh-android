@@ -71,8 +71,34 @@ emulator, and visually inspect the launcher result before committing.
 - Concurrent/unattributed: `app/src/main/java/app/terminalssh/secure/ui/TerminalScreen.kt`
   changed during Codex's claimed verification and must be reconciled by its author before
   another worker edits or stages it.
-
 ## Latest verified handoff
+
+- Launcher icon rebuild completed (2026-08-25): the full adaptive/legacy/round/monochrome set was
+  regenerated from the user artwork `/root/file_00000000143882438f4989f08e461e03.jpg` (graphite
+  gradient surface `#242529`→`#101115`, turquoise prompt `#11E8A4`, crenellated arch, three
+  diamonds). Vector XML foreground/monochrome drafts were replaced by density-complete PNG sets
+  (mdpi–xxxhdpi), legacy mdpi XML duplicates removed, and adaptive background geometry kept inside
+  the 34 dp safe radius so circle/squircle masks do not clip content. Visual launcher inspection on
+  the API 36 emulator was performed by the previous Claude window before its session ended; this
+  window re-ran all three static gates (source/market/loop), both-flavor unit tests, lint, and both
+  debug APK builds (`BUILD SUCCESSFUL`), all green with no emulator rerun in this window. Only the
+  launcher resources plus this handoff are committed; host-editor, clipboard, and terminal drafts
+  from other workers remain untouched and unstaged. Next: reconcile and verify the clipboard and
+  host-editor drafts, then run the credential-scoped live SSH keyboard/paste smoke.
+
+- Sensitive clipboard regression remains an unverified draft (2026-08-24). Inspection confirmed
+  terminal-originated copies already set `ClipDescription.EXTRA_IS_SENSITIVE` on Android 13+, but
+  that privacy contract had no coverage. The draft factors exact `ClipData` construction into the
+  internal `terminalClip` helper and adds `AppViewModelClipboardTest`; the first oracle incorrectly
+  read the clipboard from a background instrumentation process and failed because Android correctly
+  returned no primary clip. The corrected API 36 test directly inspects the production `ClipData`
+  and passed once (1/1). A required second consecutive run was blocked before execution when the
+  environment's approval-usage limit was reached, so no commit or verification claim was made.
+  Android-test compilation succeeded via Kotlin's in-process fallback, and `git diff --check`
+  passed. Draft files are `app/src/main/java/app/terminalssh/secure/vm/AppViewModel.kt` and
+  `app/src/androidTest/java/app/terminalssh/secure/vm/AppViewModelClipboardTest.kt`. Next: rerun
+  the focused test, then proportional security/unit/lint/build gates; commit only these two files
+  plus the coordination evidence if all pass.
 
 - Repository synchronization completed (2026-08-24): after a successful scoped fetch confirmed
   local `main` was a direct two-commit fast-forward of `origin/main`, verified terminal-failure
@@ -108,6 +134,29 @@ emulator, and visually inspect the launcher result before committing.
   Verified commit: `7e99e03`. No APK release is warranted for this bounded navigation fix. Next:
   finish and visually verify the claimed launcher rebuild, reconcile the terminal draft, then run
   the remaining live SSH keyboard/paste/hardware-keyboard smoke with disposable credentials.
+
+- Back-navigation draft remains unverified (2026-08-24): a scoped fetch succeeded and confirmed
+  `origin/main` remains at `02cecda`. The single focused API 36 instrumentation method executed
+  1/1 without a process crash but failed at `RootNavigationAccessibilityTest.kt:58` because
+  UIAutomator did not observe Hosts selected within five seconds. Device logcat showed the
+  Activity registering the priority-0 Compose back callback after Settings was selected and
+  removing it immediately after Back, suggesting the handler ran but the selected-state oracle
+  needs reconciliation. Another worker installed the debug package immediately afterward, so a
+  second run was not exclusive. No source/test file was edited, staged, or committed in this
+  attempt; the draft claim is cleared. Pushing the two existing verified local commits failed
+  before transfer because GitHub HTTPS credentials remain unavailable. Next: reserve the emulator/package installer, inspect a
+  hierarchy or screenshot immediately after Back, repair only the test oracle if the Hosts page
+  is visible, then require two consecutive focused passes before running the full gates.
+
+- Repository synchronization remains credential-blocked (2026-08-24): a successful scoped
+  `git fetch origin` confirmed `origin/main` at `02cecda` and local `main` is a direct
+  fast-forward two commits ahead through verified known-host normalization `5017149` and its
+  evidence handoff `5d689be`. `git push origin main` failed before transfer with
+  `could not read Username for 'https://github.com'`; no remote state changed. No device was
+  attached, so the separate back-navigation draft could not receive its required two focused
+  instrumentation passes. No product, test, launcher, terminal, or host-editor draft was edited
+  or staged during this attempt. Next: a credentialed worker should push `main`; with an attached
+  exclusive emulator, the active back-navigation owner should run its focused test twice.
 
 - Locale-independent known-host identity normalization (2026-08-24): known-host preference
   keys now lowercase hostnames with `Locale.ROOT`, preventing Turkish/default-locale changes from
@@ -770,3 +819,7 @@ Append short timestamped entries. Keep this section concise.
   head and started Android release gate run `32699930417`, which remained in progress.
 - 2026-08-24 Codex: pushed the six accumulated verified accessibility/keyboard commits through
   `fdf664e`; Claude's launcher resources and the unattributed terminal edit remained untouched.
+
+- 2026-08-25 Claude: completed the claimed launcher icon rebuild; re-ran source/market/loop gates,
+  both-flavor unit tests, lint, and both debug APK builds green, then committed only the launcher
+  resources and this handoff without touching other workers' drafts.
