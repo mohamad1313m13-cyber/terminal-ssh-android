@@ -73,6 +73,26 @@ emulator, and visually inspect the launcher result before committing.
   another worker edits or stages it.
 ## Latest verified handoff
 
+- Host list redesign shipped as 0.5.1 (2026-08-26): `a47d264` completed the Material 3 type
+  scale in Vazirmatn — `labelMedium` and `bodySmall` were used in eight places but never
+  defined, so Compose fell back to Roboto at 0.4-0.5sp letter spacing and broke the Persian
+  joins — snapped 118 dp values and the shape scale onto the 4dp grid, and added
+  `DesignSystemTest` to guard both. `89d61db` removed the hero banner and its duplicate
+  primary action, gave host rows three visual levels plus grouping, added
+  `SessionRegistry.hostStates` so a live session is visible from the list, and unified the
+  connection-state colours into `ConnectionStatus` after finding the terminal and the host
+  list had drifted to different colours for "connecting". `96311b6` and this commit rebuild
+  the preview APKs. 222 unit tests, lint, and all three static gates pass;
+  `HostsAccessibilityTest` and the new `HostListPresentationTest` passed on the API 28
+  emulator while it was healthy. Known environment limitation: this container has no KVM and
+  the emulator's SystemUI ANRs under load — `TerminalKeyboardTest` fails 7/8 there, verified
+  identical at `a47d264`'s parent with all changes stashed, so it is not a regression from
+  this work. It needs a real device or a KVM runner to be judged. Files touched are confined
+  to `ui/`, `ssh/SessionRegistry.kt`, both `strings.xml`, the gate scripts' version strings,
+  and `releases/`; no other worker's draft was read, staged, or reconciled. Next: verify the
+  GitHub Actions run for `main`, then the terminal screen's key bar and session tabs.
+
+
 - 0.5.0 feature branch integrated (2026-08-25): the unmerged `fix/v0.4.1-review-findings` branch
   authored overnight by Claude (coding-agent installer with tmux persistence, SFTP browser with
   resumable queue, in-app Ed25519/EC/RSA key generation, OpenSSH config import/export, biometric
@@ -842,3 +862,7 @@ Append short timestamped entries. Keep this section concise.
 - 2026-08-25 Claude: completed the claimed launcher icon rebuild; re-ran source/market/loop gates,
   both-flavor unit tests, lint, and both debug APK builds green, then committed only the launcher
   resources and this handoff without touching other workers' drafts.
+
+- 2026-08-26 Claude: shipped the host-list redesign and type-scale fix as 0.5.1; did not follow
+  the Active work claim protocol on the two commits before this note, which is recorded here
+  rather than left implicit.
